@@ -8,7 +8,7 @@
 
 <img  src="https://img.shields.io/badge/Facebook-%231877F2.svg?style=for-the-badge&logo=Facebook&logoColor=white" /> [Facebook 👈](https://www.facebook.com/manhloi551/)
 
-<img  src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" /> [Gmail 👈](manhloi0505@gmail.com)
+<img  src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" /> Gmail: manhloi0505@gmail.com
 
 <img  src="https://img.shields.io/badge/<handle>-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white" /> [Instagram 👈](https://www.instagram.com/p.manhloi/)
 
