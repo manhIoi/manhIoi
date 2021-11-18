@@ -1,6 +1,7 @@
 ### Hi, I'm Pham Manh Loi
 
 - FullName: Phạm Mạnh Lợi
+- Student of: University Infomation Technology (UIT)
 - Loves: games, coding, basketball
 - Hobbies: Web/Mobile App
 
