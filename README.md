@@ -23,10 +23,10 @@
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-&logo=github)
 ### Connect with me:
 <p>
-  <a target="_blank" href="https://www.linkedin.com/in/loi-pham-manh-9716a2207/"><img src="https://img.shields.io/badge/-nguyenphuc1040-0077B5?style=flat&logo=Linkedin&logoColor=white"/></a>
+  <a target="_blank" href="https://www.linkedin.com/in/loi-pham-manh-9716a2207/"><img src="https://img.shields.io/badge/-LoiPhamManh-0077B5?style=flat&logo=Linkedin&logoColor=white"/></a>
   <a target="_blank" href="mailto:manhloi0505@gmail.com"><img src="https://img.shields.io/badge/-manhloi0505@gmail.com-D14836?style=flat&logo=Gmail&logoColor=white"/></a>
   <a target="_blank" href="https://www.facebook.com/manhloi551/"><img src="https://img.shields.io/badge/-manhloi5501-1877F2?style=flat&logo=Facebook&logoColor=white"/></a>
-  <a target="_blank" href="https://www.instagram.com/p.manhloi/"><img src="https://img.shields.io/badge/-p.manhloi-1877F2?style=flat&logo=Facebook&logoColor=white"/></a>
+  <a target="_blank" href="https://www.instagram.com/p.manhloi/"><img src="https://img.shields.io/badge/-p.manhloi-E4405F?style=flat&logo=Instagram&logoColor=white"/></a>
 </p>
 
 
