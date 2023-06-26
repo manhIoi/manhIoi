@@ -1,11 +1,11 @@
-### Hi, I'm Pham Manh Loi
+### Hi, I'm Mobile Application Developer
 
-- FullName: Phạm Mạnh Lợi
+- FullName: Pham Manh Loi
 - Experience
     * Student of: University Infomation Technology (UIT)
-    * Junior of : MoMo Wallet (M_Service)
+    * Mobile Developer : MoMo Wallet (M_Service)
 
-### Languages
+### Languages programming
 ![ReactNative](http://img.shields.io/badge/-React_Native-20232A?style=flat&logo=react&logoColor=61DAFB)
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Android](http://img.shields.io/badge/-Android-08c271?style=flat-&logo=android&logoColor=ffffff)
