@@ -1,11 +1,20 @@
-# Hi, I'm Manh Loi
+
+
+## Hi 👋, I'm Manh Loi <img src="https://media.giphy.com/media/mGcNjsfWAjY5AEZNw6/giphy.gif" width="50">
+<img align="right" height="270px" alt="GIF" src="https://i.pinimg.com/originals/e4/26/70/e426702edf874b181aced1e2fa5c6cde.gif" />
 
 ## About Me
-- Full name: Pham Manh Loi
-- Year of birth: 05-05-2001
-- Experience
-    - 2019-current: Student at University Information Technology (UIT)
-    - 2021-current: Mobile Developer at MoMo Wallet (M_Service)
+
+`> Full name`: Pham Manh Loi
+
+`> Year of birth`: 05-05-2001
+
+`> Experience`:
+
+`2019-current:`: Student at <a href="https://daa.uit.edu.vn/"> University Information Technology (UIT)</a>  <img src="https://media.giphy.com/media/fYSnHlufseco8Fh93Z/giphy.gif" width="30">
+
+`2021-current:`: Mobile Developer at <a href="https://momo.vn/" >MoMo Wallet (M_Service)</a> <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30">
+
 
 ## Programming Languages
 ![React Native](http://img.shields.io/badge/-React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -26,8 +35,16 @@
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github)
 
 ## Connect with Me
-- LinkedIn: [Loi Pham Manh](https://www.linkedin.com/in/loi-pham-manh-9716a2207/)
-- Email: [manhloi0505@gmail.com](mailto:manhloi0505@gmail.com)
-- Facebook: [manhloi5501](https://www.facebook.com/manhloi551/)
-- Instagram: [p.manhloi](https://www.instagram.com/p.manhloi/)
-- PhoneNumber: +84796514641
+
+`> LinkedIn`: [Loi Pham Manh](https://www.linkedin.com/in/loi-pham-manh-9716a2207/)
+
+`> Email`: [manhloi0505@gmail.com](mailto:manhloi0505@gmail.com)
+
+`> Facebook`: [manhloi5501](https://www.facebook.com/manhloi551/)
+
+`> Instagram`: [p.manhloi](https://www.instagram.com/p.manhloi/)
+
+`> PhoneNumber:` 
+```bash
++84796514641
+```
