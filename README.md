@@ -1,6 +1,5 @@
-
-
 ## Hi 👋, I'm Manh Loi <img src="https://media.giphy.com/media/mGcNjsfWAjY5AEZNw6/giphy.gif" width="50">
+
 <img align="right" height="270px" alt="GIF" src="https://i.pinimg.com/originals/e4/26/70/e426702edf874b181aced1e2fa5c6cde.gif" />
 
 ## About Me
@@ -11,12 +10,12 @@
 
 `> Experience`:
 
-`2019-current:`: Student at <a href="https://daa.uit.edu.vn/"> University Information Technology (UIT)</a>  <img src="https://media.giphy.com/media/fYSnHlufseco8Fh93Z/giphy.gif" width="30">
+`2019-2024:`: Student at <a href="https://daa.uit.edu.vn/"> University Information Technology (UIT)</a> <img src="https://media.giphy.com/media/fYSnHlufseco8Fh93Z/giphy.gif" width="30">
 
 `2021-current:`: Mobile Developer at <a href="https://momo.vn/" >MoMo Wallet (M_Service)</a> <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30">
 
-
 ## Programming Languages
+
 ![React Native](http://img.shields.io/badge/-React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![React](http://img.shields.io/badge/-React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
@@ -28,6 +27,7 @@
 ![CSS3](https://img.shields.io/badge/-CSS3-%231572B6?style=for-the-badge&logo=css3)
 
 ## Tools and IDEs 💻
+
 ![VS Code](http://img.shields.io/badge/-VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=ffffff)
 ![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
 ![XCode](https://img.shields.io/badge/xCode-007ACC.svg?style=for-the-badge&logo=xCode&logoColor=white)
@@ -44,7 +44,8 @@
 
 `> Instagram`: [p.manhloi](https://www.instagram.com/p.manhloi/)
 
-`> PhoneNumber:` 
+`> PhoneNumber:`
+
 ```bash
-+84796514641
++84792465841
 ```
