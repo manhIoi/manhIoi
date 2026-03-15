@@ -1,6 +1,6 @@
 # Hi 👋, I'm Manh Loi
 
-I'm a Full-Stack Developer passionate about building websites and mobile applications! 💻📱
+I'm a Full-Stack Developer passionate about building websites and mobile applications, powered by AI tools! 💻📱🤖
 
 ### What I Can Build
 
@@ -8,8 +8,17 @@ I'm a Full-Stack Developer passionate about building websites and mobile applica
 - 🌐 **Websites**: Full-stack web applications using React.js, TypeScript, and Node.js
 - 🎨 **Modern UI/UX**: Responsive designs with HTML5 & CSS3
 - 🔄 **Backend Services**: RESTful APIs and server-side applications
+- 🤖 **AI-Enhanced Development**: Leveraging AI tools to write better, cleaner code faster
 
 I love turning ideas into reality through code. Whether it's a sleek mobile app or a dynamic website, I've got the skills to make it happen!
+
+### AI-Powered Development 🤖
+
+I leverage cutting-edge AI tools to enhance productivity and code quality:
+
+![OpenCode](https://img.shields.io/badge/-OpenCode-000000?style=for-the-badge)
+![Cursor](https://img.shields.io/badge/-Cursor-00A3E0?style=for-the-badge)
+![GitHub Copilot](https://img.shields.io/badge/-GitHub%20Copilot-000000?style=for-the-badge&logo=github&logoColor=white)
 
 ### About Me
 
@@ -18,11 +27,11 @@ I love turning ideas into reality through code. Whether it's a sleek mobile app 
 
 ### Experience
 
-📍 **Feb 2026 - Present**
-│   └── Mobile Developer at [HDBank](https://hdbank.com.vn/)
+📍 **Feb 2026 - Present**<br>
+└── Mobile Developer at [HDBank](https://hdbank.com.vn/)
 
-📍 **2021 - Jan 2026**
-│   └── Mobile Developer at [MoMo Wallet (M_Service)](https://momo.vn/)
+📍 **2021 - Jan 2026**<br>
+└── Mobile Developer at [MoMo Wallet (M_Service)](https://momo.vn/)
 
 ### Education
 
