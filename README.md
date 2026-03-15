@@ -1,4 +1,4 @@
-# Hi 👋, I'm Manh Loi <img src="https://media.giphy.com/media/mGcNjsfWAjY5AEZNw6/giphy.gif" width="50">
+# Hi 👋, I'm Manh Loi
 
 I'm a Full-Stack Developer passionate about building websites and mobile applications! 💻📱
 
@@ -11,8 +11,6 @@ I'm a Full-Stack Developer passionate about building websites and mobile applica
 
 I love turning ideas into reality through code. Whether it's a sleek mobile app or a dynamic website, I've got the skills to make it happen!
 
-<img align="right" height="270px" alt="GIF" src="https://i.pinimg.com/originals/e4/26/70/e426702edf874b181aced1e2fa5c6cde.gif" />
-
 ### About Me
 
 - **Full Name**: Pham Manh Loi
@@ -20,8 +18,15 @@ I love turning ideas into reality through code. Whether it's a sleek mobile app 
 
 ### Experience
 
-- **2019-2024**: Student at [University Information Technology (UIT)](https://daa.uit.edu.vn/) <img src="https://media.giphy.com/media/fYSnHlufseco8Fh93Z/giphy.gif" width="30">
-- **2021-Present**: Mobile Developer at [MoMo Wallet (M_Service)](https://momo.vn/) <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30">
+📍 **Feb 2026 - Present**
+│   └── Mobile Developer at [HDBank](https://hdbank.com.vn/)
+
+📍 **2021 - Jan 2026**
+│   └── Mobile Developer at [MoMo Wallet (M_Service)](https://momo.vn/)
+
+### Education
+
+- **2019 - 2024**: Student at [University Information Technology (UIT)](https://daa.uit.edu.vn/)
 
 ### Tech Stack
 
