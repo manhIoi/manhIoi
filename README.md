@@ -1,68 +1,87 @@
-# Hi 👋, I'm Manh Loi
+<div align="center">
 
-I'm a Full-Stack Developer passionate about building websites and mobile applications, powered by AI tools! 💻📱🤖
+# Pham Manh Loi
 
-### What I Can Build
+**Full-Stack Developer** | Mobile Specialist | AI-Powered Builder
 
-- 📱 **Mobile Apps**: Native Android apps with Kotlin and cross-platform apps with React Native
-- 🌐 **Websites**: Full-stack web applications using React.js, TypeScript, and Node.js
-- 🎨 **Modern UI/UX**: Responsive designs with HTML5 & CSS3
-- 🔄 **Backend Services**: RESTful APIs and server-side applications
-- 🤖 **AI-Enhanced Development**: Leveraging AI tools to write better, cleaner code faster
+*Turning ideas into reality through code — mobile apps, web apps, and everything in between.*
 
-I love turning ideas into reality through code. Whether it's a sleek mobile app or a dynamic website, I've got the skills to make it happen!
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/loi-pham-manh-9716a2207/)
+[![Email](https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:manhloi0505@gmail.com)
+[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/manhloi551/)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/p.manhloi/)
 
-### AI-Powered Development 🤖
+</div>
 
-I leverage cutting-edge AI tools to enhance productivity and code quality:
+---
 
-![OpenCode](https://img.shields.io/badge/-OpenCode-000000?style=for-the-badge)
-![Cursor](https://img.shields.io/badge/-Cursor-00A3E0?style=for-the-badge)
-![GitHub Copilot](https://img.shields.io/badge/-GitHub%20Copilot-000000?style=for-the-badge&logo=github&logoColor=white)
-
-### About Me
+## About Me
 
 - **Full Name**: Pham Manh Loi
 - **Born**: May 5, 2001
+- **Phone**: +84 79 246 5841
+- Passionate about building **mobile apps** and **web applications**, supercharged by AI tools
 
-### Experience
+---
 
-📍 **Feb 2026 - Present**<br>
-└── Mobile Developer at [HDBank](https://hdbank.com.vn/)
+## Experience
 
-📍 **2021 - Jan 2026**<br>
-└── Mobile Developer at [MoMo Wallet (M_Service)](https://momo.vn/)
+| Period | Role | Company |
+|--------|------|---------|
+| Feb 2026 – Present | Mobile Developer | [HDBank](https://hdbank.com.vn/) |
+| 2021 – Jan 2026 | Mobile Developer | [MoMo Wallet (M_Service)](https://momo.vn/) |
 
-### Education
+---
 
-- **2019 - 2024**: Student at [University Information Technology (UIT)](https://daa.uit.edu.vn/)
+## Education
 
-### Tech Stack
+**2019 – 2024** — [University of Information Technology (UIT)](https://daa.uit.edu.vn/)
 
-#### Programming Languages & Frameworks
+---
 
+## Tech Stack
+
+### Mobile & Frontend
 ![React Native](http://img.shields.io/badge/-React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![React](http://img.shields.io/badge/-React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Android](http://img.shields.io/badge/-Android-08c271?style=for-the-badge&logo=android&logoColor=ffffff)
-![JavaScript](https://img.shields.io/badge/-JavaScript-%23F7DF1C?style=for-the-badge&logo=javascript&logoColor=000000&labelColor=%23F7DF1C&color=%23FFCE5A)
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1C?style=for-the-badge&logo=javascript&logoColor=000000)
 ![TypeScript](http://img.shields.io/badge/-TypeScript-0078D6?style=for-the-badge&logo=typescript&logoColor=ffffff)
-![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![HTML5](https://img.shields.io/badge/-HTML5-%23E44D27?style=for-the-badge&logo=html5&logoColor=ffffff)
-![CSS3](https://img.shields.io/badge/-CSS3-%231572B6?style=for-the-badge&logo=css3)
+![HTML5](https://img.shields.io/badge/-HTML5-E44D27?style=for-the-badge&logo=html5&logoColor=ffffff)
+![CSS3](https://img.shields.io/badge/-CSS3-1572B6?style=for-the-badge&logo=css3)
 
-#### Development Tools
+### Backend
+![Node.js](https://img.shields.io/badge/Node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
+### Tools & IDE
 ![VS Code](http://img.shields.io/badge/-VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=ffffff)
-![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
-![XCode](https://img.shields.io/badge/xCode-007ACC.svg?style=for-the-badge&logo=xCode&logoColor=white)
-![Git](https://img.shields.io/badge/-Git-%23F05032?style=for-the-badge&logo=git&logoColor=%23ffffff)
+![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white)
+![Xcode](https://img.shields.io/badge/Xcode-007ACC?style=for-the-badge&logo=xcode&logoColor=white)
+![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=ffffff)
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github)
 
-### Let's Connect! 🤝
+### AI-Powered Development
+![OpenCode](https://img.shields.io/badge/-OpenCode-000000?style=for-the-badge)
+![Cursor](https://img.shields.io/badge/-Cursor-00A3E0?style=for-the-badge)
+![GitHub Copilot](https://img.shields.io/badge/-GitHub%20Copilot-000000?style=for-the-badge&logo=github&logoColor=white)
 
-- 💼 [LinkedIn](https://www.linkedin.com/in/loi-pham-manh-9716a2207/)
-- 📧 [Email](mailto:manhloi0505@gmail.com)
-- 📱 [Facebook](https://www.facebook.com/manhloi551/)
-- 📸 [Instagram](https://www.instagram.com/p.manhloi/)
-- 📞 Phone: `+84792465841`
+---
+
+## What I Build
+
+| | Capability |
+|---|---|
+| **Mobile Apps** | Native Android (Kotlin) & cross-platform (React Native) |
+| **Web Apps** | Full-stack with React.js, TypeScript, Node.js |
+| **UI/UX** | Responsive, modern designs with HTML5 & CSS3 |
+| **Backend** | RESTful APIs & server-side services |
+| **AI-Enhanced** | Cleaner, faster code with cutting-edge AI tooling |
+
+---
+
+<div align="center">
+
+*Let's build something great together!*
+
+</div>
