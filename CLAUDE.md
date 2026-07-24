@@ -17,37 +17,54 @@ This is `iammanhIoi/iammanhIoi` — a GitHub profile repository. Its sole purpos
 - `README.md` is one `yaml` code block and nothing else. Editing it means editing that block — read the section below first, because several obvious-looking edits break the rendering.
 - There is nothing to build, lint, or test. **Do not verify with a local Markdown preview** — IntelliJ's and VS Code's highlighters color this block completely differently from GitHub's, so a local preview will show wrong colors and send you chasing a non-bug. Use the Markdown API call below.
 
-### The card is one `yaml` fence — and every part of that is load-bearing
+### The card is one `css` fence — and every part of that is load-bearing
 
-The card is a **single** ```` ```yaml ```` block. Each line is
-`Label: value` on the left, then ` # `, then a slice of the ASCII art. YAML
-gives three colors, one per syntactic slot:
+The card is a **single** ```` ```css ```` block. Each line is:
+
+```
+/* <art slice> */ <Label> /* <dots> <value> */
+```
+
+which CSS tokenizes into exactly three slots:
 
 | slot | class | dark | light |
 |---|---|---|---|
-| `Label` (key) | `pl-ent` | `#7ee787` green | `#116329` green |
-| value | `pl-s` | `#a5d6ff` blue | `#0a3069` navy |
-| art (after `#`, a comment) | `pl-c` | `#8b949e` grey | `#6e7781` grey |
+| art — a block comment | `pl-c` | `#8b949e` grey | `#6e7781` grey |
+| `Label` — a selector | `pl-ent` | `#7ee787` green | `#116329` green |
+| value — a block comment | `pl-c` | same grey as the art | same grey as the art |
 
-Putting the art in the comment slot is the trick that makes this work. It gives
-the art a neutral grey, which is what the reference profile does, and — because
-YAML never parses inside a comment — the art may contain **any** characters,
-including `:` and `&`. Art on the *left* of the line does not have that freedom:
-it gets swallowed into the key, turning green and breaking on those characters.
+**Why CSS and not YAML.** A `#` comment runs to end of line, so with YAML the art
+could only ever sit to the *right* of the panel — and art placed to the *left*
+gets folded into the key and takes the key's colour. CSS has `/* … */` block
+comments, which close mid-line. That is the only construct found that puts
+neutral text to the left of a coloured token. ~20 grammars were tested; nothing
+else does it.
 
-Constraints:
+Constraints, all of which have been hit for real:
 
-- **Every line must contain a colon before the `#`**, so the panel must have
-  exactly as many rows as the art — no blank spacer lines. Group with the
-  `Section: ─────` rules instead. A colon-less line loses the key color and
-  reads as a rendering glitch.
-- **Keep total line width under ~95 characters.** The profile README column is
+- **A label must be a valid CSS selector.** It cannot start with a digit and it
+  cannot contain `@`. `manhIoi@github` silently broke *every* line after it (`@`
+  opens an at-rule); `2026.02-now` broke everything from `Timeline` down. This is
+  why the timeline rows are keyed by employer (`HDBank`, `MoMo`, `UIT`) with the
+  dates in the value — not the other way round.
+- **The art may not contain `*` or `/`**, which would close its comment early.
+  The ramp in use, `` .:;+xX$& ``, is safe. Check any new art before using it.
+- **Every line needs both comments**, so the panel must have exactly as many rows
+  as the art — no blank spacer lines. Group with the `Section /* ───── */` rules.
+- **Keep total line width under ~110 characters.** The profile README column is
   narrower than a repo page's; past that the block scrolls horizontally.
-- **Color is per syntactic slot, not per word.** Three colors, that is the
-  ceiling. There is no way to give "TypeScript" its brand blue or "MoMo" pink
-  inside a fence — ~15 grammars were tested. The consequence for content:
-  **anything you want highlighted must be a label**, which is why `Stack` is
-  keyed by language (`TypeScript: … React, Next.js`) rather than by category.
+- **Colour is per syntactic slot, not per word.** Three slots, that is the
+  ceiling — there is no way to give "TypeScript" its brand blue or "MoMo" pink.
+  The consequence: **anything you want highlighted must be a label.** That is why
+  `Stack` is keyed by language rather than by category.
+
+Verify a change by counting classes, not by eye — a broken selector fails
+*silently*, downgrading later lines to plain text rather than erroring:
+
+```sh
+gh api --method POST /markdown -f mode=markdown -f text="$(cat README.md)" \
+  | grep -o 'pl-ent' | wc -l    # must equal the number of panel rows
+```
 
 ### Approaches that were tried and rejected
 
@@ -66,6 +83,8 @@ Constraints:
   spaces before the colon is tagged `pl-ii` — a **red background** on GitHub.
 - **`makefile` grammar**: only two slots (purple key, plain value), no neutral
   slot for the art.
+- **`yaml` grammar**: three slots, but `#` comments run to end of line, so the
+  art is stuck on the right-hand side.
 
 ### What not to add back
 
