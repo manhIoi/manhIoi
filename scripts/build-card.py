@@ -13,7 +13,7 @@ from html import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-ART_SRC = os.path.join(HERE, "art-{}.txt")   # one per theme
+ART_SRC = os.path.join(HERE, "art.txt")
 
 # ---- palette ---------------------------------------------------------------
 # (dark, light). Brand hues are nudged where the true brand colour would be
@@ -111,6 +111,10 @@ ROWS = [
 
 # ---- geometry --------------------------------------------------------------
 FS, LH, PAD = 14, 19, 22
+# Block glyphs fill their em box, so at the panel's 19px leading they leave a gap
+# between rows and the portrait breaks up into horizontal bars. Pack the art rows
+# tight enough that the blocks meet.
+ART_LH = 16
 CW = FS * 0.6
 GAP = 3 * CW
 # Box-drawing glyphs are East-Asian "ambiguous width": a font without them can
@@ -119,13 +123,22 @@ GAP = 3 * CW
 FONTS = ("Menlo,'DejaVu Sans Mono','Noto Sans Mono',Consolas,'Cascadia Mono',"
          "ui-monospace,SFMono-Regular,'Liberation Mono','Courier New',monospace")
 
-# The portrait is tone-mapped per theme. Ink density reads as *darkness* on a
-# light background and as *brightness* on a dark one, so a single rendering is
-# necessarily inverted in one of the two — the dark file maps bright pixels to
-# dense glyphs, the light file maps dark pixels to dense glyphs.
-ARTS = {t: open(ART_SRC.format(t)).read().rstrip("\n").split("\n")
-        for t in ("dark", "light")}
-AW = max(len(a) for arts in ARTS.values() for a in arts)
+# Ink density reads as *darkness* on a light background but as *brightness* on a
+# dark one, so the one portrait has to be tone-flipped for the dark theme or the
+# cat's mouth — its darkest feature — comes out as the brightest thing on the
+# card. Flipping the ramp in place keeps both themes showing the same drawing.
+SHADE = " .░▒▓█"                       # light ink -> heavy ink
+FLIP = dict(zip(SHADE[1:], reversed(SHADE[1:])))   # spaces stay background
+
+def flip_tone(line):
+    # stray marks left over from the source art are its lightest ink
+    return "".join(" " if ch == " " else FLIP.get(ch, "█") for ch in line)
+
+_art = open(ART_SRC).read().rstrip("\n").split("\n")
+_w = max(len(a) for a in _art)
+ARTS = {"light": [a.ljust(_w) for a in _art],
+        "dark":  [flip_tone(a.ljust(_w)) for a in _art]}
+AW = _w
 PW = max(sum(len(t) for t, _ in r) for r in ROWS if r != "gap")
 W = round(PAD * 2 + AW * CW + GAP + PW * CW)
 H = round(PAD * 2 + max(max(map(len, ARTS.values())), len(ROWS)) * LH)
@@ -140,12 +153,13 @@ def render(theme):
            f'  <rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="10" '
            f'fill="{c["bg"]}" stroke="{c["border"]}"/>']
     y0 = PAD + FS
-    off = max(0, (len(ROWS) - len(ART)) // 2)
-    for n, line in enumerate(ART, start=off):
+    art_h = len(ART) * ART_LH
+    ay = PAD + FS + max(0, (len(ROWS) * LH - art_h) // 2)
+    for n, line in enumerate(ART):
         if line.strip():
             out.append(
                 f'  <text style="white-space:pre" fill="{c["art"]}" x="{PAD}" '
-                f'y="{y0 + n*LH}" textLength="{len(line)*CW:.2f}" '
+                f'y="{ay + n*ART_LH}" textLength="{len(line)*CW:.2f}" '
                 f'lengthAdjust="spacing">{escape(line)}</text>')
     x0 = AW + 3
     for n, row in enumerate(ROWS):

@@ -11,8 +11,7 @@ This is `manhIoi/manhIoi` — a GitHub profile repository. Its sole purpose is t
 - `README.md` — six lines: a `<picture>` that swaps between two generated SVGs. Do not put anything else on the profile page; see "What not to add back".
 - `assets/card-dark.svg`, `assets/card-light.svg` — **generated, never hand-edit.**
 - `scripts/build-card.py` — the generator. Edit `P` (palette) or `ROWS` (content) and run `python3 scripts/build-card.py`. Needs Pillow only if `art.txt` is being re-rendered from a photo; the build itself is stdlib.
-- `scripts/art-dark.txt`, `scripts/art-light.txt` — the ASCII portrait, one file per theme.
-- `assets/avatar-source.jpg` — the photo both were derived from (the account avatar, `https://github.com/manhIoi.png`).
+- `scripts/art.txt` — the ASCII portrait. Authored for a light background; the dark variant is derived from it at build time.
 - `AGENTS.md` — stale inherited boilerplate describing a `skills/` layout that does not exist here. Ignore it.
 
 ## Working in this repo
@@ -44,16 +43,17 @@ The git history holds the code-block version if that trade ever needs revisiting
 
 ### Things that will bite
 
-- **The portrait needs one file per theme, and they are not the same image.**
-  Ink density reads as *darkness* on white and as *brightness* on black, so a
-  single rendering is inverted in one of the two — that is exactly how the dark
-  theme first shipped looking wrong while the light theme looked right. The
-  light file maps dark pixels to dense glyphs; the dark file maps bright pixels
-  to dense glyphs. Regenerating one means regenerating both.
-- **The subject has to be masked, not thresholded.** The cat is near-white on a
-  beige floor — barely any luminance separation — so an automatic threshold
-  fills the whole frame with background. The generator uses a hand-traced
-  polygon around the cat.
+- **The dark portrait is the light one with its tones flipped**, done in
+  `flip_tone` at build time — not a second drawing. Ink density reads as
+  *darkness* on white but as *brightness* on black, so shipping one file to both
+  themes renders the cat's mouth, its darkest feature, as the brightest thing on
+  the card. Flipping the `SHADE` ramp in place (spaces stay background) keeps
+  both themes showing the same drawing. Redrawing the dark side from the source
+  photo instead was tried and rejected — it produced a visibly different, much
+  sparser cat.
+- **The art needs a tighter leading than the panel** (`ART_LH`, 16px against the
+  panel's 19px). Block glyphs fill their em box, so at the panel's leading they
+  leave a gap between rows and the portrait breaks into horizontal bars.
 - **Alignment must not depend on the reader's font.** Every `<tspan>` carries its
   own `x` and `textLength`, so columns hold even where the monospace metrics
   differ. Keep that if you touch the renderer.
