@@ -27,11 +27,30 @@ The card is a **single** ```` ```css ```` block. Each line is:
 
 which CSS tokenizes into exactly three slots:
 
-| slot | class | dark | light |
-|---|---|---|---|
-| art — a block comment | `pl-c` | `#8b949e` grey | `#6e7781` grey |
-| `Label` — a selector | `pl-ent` | `#7ee787` green | `#116329` green |
-| value — a block comment | `pl-c` | same grey as the art | same grey as the art |
+| slot | class | palette variable |
+|---|---|---|
+| art — a block comment | `pl-c` | `comment` |
+| `Label` — a selector | `pl-ent` | `entity-tag` |
+| value — a block comment | `pl-c` | `comment` — same as the art, by construction |
+
+**Never hard-code what those look like, and never trust a hand-written preview
+stylesheet.** The class → variable map lives in GitHub's `global-*.css` and the
+variable → hex map in each theme's `dark*.css` / `light*.css`; both have changed.
+`entity-tag` is `#7ee787` green under `dark` but `#a5d6ff` blue under
+`dark_colorblind` and `dark_tritanopia`, and `#0550ae` blue under every light
+theme — so the same file legitimately looks different to different readers, and
+"the label is the wrong colour" is often the reader's theme, not a bug. Read the
+real values instead of guessing:
+
+```sh
+u=$(curl -s https://github.com/manhIoi | grep -oE 'https://[^"]*dark-[0-9a-f]+\.css' | head -1)
+curl -s "$u" | tr '{;' '\n\n' | grep -oE 'prettylights-syntax-[a-z-]+:#[0-9a-f]+'
+```
+
+Two traps in that map: `pl-s` and `pl-v` both resolve to `constant`, not to
+`string`/`variable` as their names suggest. `pl-smi` resolves to
+`storage-modifier-import`, which is the only near-white/near-black entry
+(`#f0f6fc` / `#1f2328`) and is identical across every theme variant.
 
 **Why CSS and not YAML.** A `#` comment runs to end of line, so with YAML the art
 could only ever sit to the *right* of the panel — and art placed to the *left*
