@@ -46,7 +46,7 @@ P = {
     "Jenkins":    ("#E8756B", "#B4352A"),
     "Actions":    ("#79C0FF", "#0969DA"),
 
-    "q.buzz": ("#F5A524", "#B45309"),
+    "Q.Buzz": ("#38BDF8", "#0369A1"),
     "HDBank": ("#FF6B5E", "#E2231A"),
     "MoMo":   ("#F072B6", "#A50064"),
     "UIT":    ("#79C0FF", "#005BAA"),
@@ -89,7 +89,7 @@ ROWS = [
     [("   ● ", "HDBank"), ("HDBank", "HDBank"),
      ("  Mobile Developer", "value"), ("        2026.02 → now", "dim")],
     [("   │ ", "rule"), ("Mobile banking and payment platform", "dim")],
-    [("   ● ", "q.buzz"), ("q.buzz", "q.buzz"),
+    [("   ● ", "Q.Buzz"), ("Q.Buzz", "Q.Buzz"),
      ("  Mobile Developer", "value"), ("        2026.01 → now", "dim")],
     [("   │ ", "rule"), ("Daily habit tracking, health insights", "dim")],
     [("   ● ", "MoMo"), ("MoMo", "MoMo"), ("  Mobile Developer", "value"),
