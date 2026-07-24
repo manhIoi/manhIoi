@@ -4,117 +4,66 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-This is `iammanhIoi/iammanhIoi` — a GitHub profile repository. Its sole purpose is to render the profile README shown on https://github.com/iammanhIoi. There is no application code, build system, linter, or test suite here.
+This is `manhIoi/manhIoi` — a GitHub profile repository. Its sole purpose is to render the profile README shown on https://github.com/manhIoi. There is no application code, linter, or test suite here. The default branch is **`master`**; GitHub only renders the profile from the default branch.
 
 ## Structure
 
-- `README.md` — the profile page content, and the only file that matters functionally. It is one thing: a neofetch-style card (ASCII portrait + info panel) in a two-column `<table>`. Nothing follows it, deliberately — see "What not to add back" below.
-- `AGENTS.md` — a generic Codex/skills-workspace contributor guide (references a `skills/<skill-name>/` layout, `config.toml`, validator scripts, etc.). None of that structure actually exists in this repository — treat `AGENTS.md` as stale/inherited boilerplate, not a description of this repo's real layout.
-- `.gitignore` — ignores `.idea/` (JetBrains project files).
+- `README.md` — six lines: a `<picture>` that swaps between two generated SVGs. Do not put anything else on the profile page; see "What not to add back".
+- `assets/card-dark.svg`, `assets/card-light.svg` — **generated, never hand-edit.**
+- `scripts/build-card.py` — the generator. Edit `P` (palette) or `ROWS` (content) and run `python3 scripts/build-card.py`. Needs Pillow only if `art.txt` is being re-rendered from a photo; the build itself is stdlib.
+- `scripts/art.txt` — the ASCII portrait, one line per panel row.
+- `AGENTS.md` — stale inherited boilerplate describing a `skills/` layout that does not exist here. Ignore it.
 
 ## Working in this repo
 
-- `README.md` is one `yaml` code block and nothing else. Editing it means editing that block — read the section below first, because several obvious-looking edits break the rendering.
-- There is nothing to build, lint, or test. **Do not verify with a local Markdown preview** — IntelliJ's and VS Code's highlighters color this block completely differently from GitHub's, so a local preview will show wrong colors and send you chasing a non-bug. Use the Markdown API call below.
-
-### The card is one `css` fence — and every part of that is load-bearing
-
-The card is a **single** ```` ```css ```` block. Each line is:
-
-```
-/* <art slice> */ <Label> /* <dots> <value> */
-```
-
-which CSS tokenizes into exactly three slots:
-
-| slot | class | palette variable |
-|---|---|---|
-| art — a block comment | `pl-c` | `comment` |
-| `Label` — a selector | `pl-ent` | `entity-tag` |
-| value — a block comment | `pl-c` | `comment` — same as the art, by construction |
-
-**Never hard-code what those look like, and never trust a hand-written preview
-stylesheet.** The class → variable map lives in GitHub's `global-*.css` and the
-variable → hex map in each theme's `dark*.css` / `light*.css`; both have changed.
-`entity-tag` is `#7ee787` green under `dark` but `#a5d6ff` blue under
-`dark_colorblind` and `dark_tritanopia`, and `#0550ae` blue under every light
-theme — so the same file legitimately looks different to different readers, and
-"the label is the wrong colour" is often the reader's theme, not a bug. Read the
-real values instead of guessing:
+Regenerate and eyeball in a real browser — the SVG uses `textLength`, which macOS QuickLook (`qlmanage`) gets wrong, so it is not a valid preview:
 
 ```sh
-u=$(curl -s https://github.com/manhIoi | grep -oE 'https://[^"]*dark-[0-9a-f]+\.css' | head -1)
-curl -s "$u" | tr '{;' '\n\n' | grep -oE 'prettylights-syntax-[a-z-]+:#[0-9a-f]+'
+python3 scripts/build-card.py
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --screenshot=out.png --window-size=1027,690 assets/card-dark.svg
 ```
 
-Two traps in that map: `pl-s` and `pl-v` both resolve to `constant`, not to
-`string`/`variable` as their names suggest. `pl-smi` resolves to
-`storage-modifier-import`, which is the only near-white/near-black entry
-(`#f0f6fc` / `#1f2328`) and is identical across every theme variant.
+### Why an SVG and not a code block
 
-**Why CSS and not YAML.** A `#` comment runs to end of line, so with YAML the art
-could only ever sit to the *right* of the panel — and art placed to the *left*
-gets folded into the key and takes the key's colour. CSS has `/* … */` block
-comments, which close mid-line. That is the only construct found that puts
-neutral text to the left of a coloured token. ~20 grammars were tested; nothing
-else does it.
+A fenced code block keeps the text selectable, and that was the goal for six
+iterations. It cannot do what the profile now asks for. A highlighter colours by
+**syntactic role, not by word**: `TypeScript` and `Kotlin` are the same token
+type, so they always get the same colour. About twenty grammars were tested; the
+best any managed was three slots (`css`: grey block-comment art, one coloured
+selector, grey comment value). Per-language brand colours, a timeline with
+coloured nodes, and colours that do not shift with the reader's theme are all out
+of reach there.
 
-Constraints, all of which have been hit for real:
+Writing each word as a `<tspan fill="…">` buys all of that. It costs the text:
+an SVG in an `<img>` cannot be selected, copied, or read by a screen reader —
+the `alt` text is the only thing assistive tech sees, so keep it accurate.
 
-- **A label must be a valid CSS selector.** It cannot start with a digit and it
-  cannot contain `@`. `manhIoi@github` silently broke *every* line after it (`@`
-  opens an at-rule); `2026.02-now` broke everything from `Timeline` down. This is
-  why the timeline rows are keyed by employer (`HDBank`, `MoMo`, `UIT`) with the
-  dates in the value — not the other way round.
-- **The art may not contain `*` or `/`**, which would close its comment early.
-  The ramp in use, `` .:;+xX$& ``, is safe. Check any new art before using it.
-- **Every line needs both comments**, so the panel must have exactly as many rows
-  as the art — no blank spacer lines. Group with the `Section /* ───── */` rules.
-- **Keep total line width under ~110 characters.** The profile README column is
-  narrower than a repo page's; past that the block scrolls horizontally.
-- **Colour is per syntactic slot, not per word.** Three slots, that is the
-  ceiling — there is no way to give "TypeScript" its brand blue or "MoMo" pink.
-  The consequence: **anything you want highlighted must be a label.** That is why
-  `Stack` is keyed by language rather than by category.
+The git history holds the code-block version if that trade ever needs revisiting.
 
-Verify a change by counting classes, not by eye — a broken selector fails
-*silently*, downgrading later lines to plain text rather than erroring:
+### Things that will bite
 
-```sh
-gh api --method POST /markdown -f mode=markdown -f text="$(cat README.md)" \
-  | grep -o 'pl-ent' | wc -l    # must equal the number of panel rows
-```
-
-### Approaches that were tried and rejected
-
-- **HTML/CSS.** GitHub's sanitizer strips `style` attributes, `class`
-  attributes, and `<font>` tags outright, and escapes `<style>` blocks into
-  visible text. Verified against the Markdown API — there is no colour control
-  through HTML at all.
-- **A generated SVG** (what `Andrew6rant/Andrew6rant` actually ships — its whole
-  README is a `<picture>` of two `.svg` files). Gives arbitrary per-word colour,
-  but it is an image: the text cannot be selected, copied, or read by a screen
-  reader. Rejected for that reason; re-read this before "fixing" the colours.
-- **Two fences in a `<table>`** (art `text`, panel `http`): renders as *two*
-  grey boxes, and the table sizes its cells wider than the profile column, so
-  the right side is clipped mid-word.
-- **`http` grammar**: its label must be a valid header token, so any line with
-  spaces before the colon is tagged `pl-ii` — a **red background** on GitHub.
-- **`makefile` grammar**: only two slots (purple key, plain value), no neutral
-  slot for the art.
-- **`yaml` grammar**: three slots, but `#` comments run to end of line, so the
-  art is stuck on the right-hand side.
+- **Alignment must not depend on the reader's font.** Every `<tspan>` carries its
+  own `x` and `textLength`, so columns hold even where the monospace metrics
+  differ. Keep that if you touch the renderer.
+- **`white-space:pre` goes on each `<text>` as an inline style.** Relying on
+  `xml:space="preserve"` alone silently collapsed runs of spaces in Chrome and
+  smeared the art across the full line width.
+- **Colour is authored, so contrast is now your problem.** GitHub no longer
+  picks it. Several brand hues are illegible on one of the two backgrounds, so
+  `P` stores `(dark, light)` pairs — JavaScript yellow becomes `#9A8700` on
+  white, React cyan becomes `#0B8CA8`, Next.js flips black/white.
+- **Theme switching follows the OS, not GitHub.** `prefers-color-scheme` is a
+  browser media query; GitHub's own theme picker cannot change what it reports.
+  A reader whose GitHub theme is set explicitly to Dark while their OS is Light
+  gets the light card on a dark page. Only "Sync with system" matches. Nothing in
+  this repo can fix that — it is inherent to `<picture>`.
 
 ### What not to add back
 
 - **A contribution graph.** GitHub renders the contribution calendar and "Contribution activity" list natively on the profile page, directly under the README — it cannot be removed and every visitor sees it. Third-party widgets (`ghchart.rshah.org`, `streak-stats.demolab.com`) only see *public* contributions, so for this account they render near-empty (~16) against a real count in the hundreds. Adding one makes the profile look less active, not more.
 - **`github-readme-stats.vercel.app` cards.** Returned 503 for every username when last checked — a broken image on the profile. Re-verify with `curl -o /dev/null -w '%{http_code}'` before ever re-adding.
-- **A `## Connect` section.** The contacts are already in the card's `Contact:` block. It was removed as a duplicate.
-
-### Verifying a README change
-
-Render it through GitHub's own Markdown API instead of guessing — it returns the real token classes:
-
-```sh
-gh api --method POST /markdown -f mode=markdown -f text="$(cat README.md)" | grep pl-ii   # must be empty
-```
+- **A `## Connect` section.** The contacts are already in the card's `Contact` block. It was removed as a duplicate.
+- **HTML/CSS for colour.** GitHub's sanitizer strips `style` and `class`
+  attributes and `<font>` tags, and escapes `<style>` blocks into visible text.
+  Verified against the Markdown API — there is no colour control through HTML.

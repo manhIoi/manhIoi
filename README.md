@@ -1,31 +1,6 @@
-```css
-/*     :...:                      .:;;;;;.       */ manhIoi /* ──────────────────────────────────────── */
-/*    ;x+x+++;.                  :++;;;;;;       */ Name /* ............................. Pham Manh Loi */
-/*    +xxx+++xx;.      .:.;:::::;;++;;;;;;.      */ Role /* ................. Software Engineer, Mobile */
-/*    +xxxx++++xx+++++;;;:::.....::;;+x++;;      */ Focus /* ............. Fintech, payments, wearables */
-/*    :xxxxxx+++xXXXx+;;;;::::::::;;+++;;;;.     */ Location /* ............................... Vietnam */
-/*     :xxxxxx+++x++++xxx+;:::;++xxxx;:::::;.    */ Speaks /* ..................... Vietnamese, English */
-/*      :+xxxxxx++x+;;;::::;+XX$$$$$&$Xx+;:;;.   */ Uptime /* .................. 5+ years in production */
-/*       :;;+xXx+xX+;:::;+X$$&&&&&&&&&&&&Xx+++.  */ IDE /* .................... VS Code, Android Studio */
-/*       .;;;+xxxXX+;;++x$&&&&&&&&&&&&&&&&$Xx++. */ Stack /* ────────────────────────────────────────── */
-/*        ;xxxXXXXx++++x&&&&&&$&$$$$$$&&&&&$Xx+: */ TypeScript /* ............. React, Next.js, Node.js */
-/*         ;XXX$$X++++X&&&&$$&$$$$$$$$$$$&&$Xx++ */ Kotlin /* ................. Android native, Compose */
-/*         .X$$$$x+++x$&&$$$$$$$$$$$$$$$$$$$XX++ */ Swift /* .................... iOS, watchOS, SwiftUI */
-/*          :$$$XX++xX$&$$$$$$$$$$$$$$$$$$$$Xx+; */ JavaScript /* ............... Vue.js, build tooling */
-/*           ;&$$Xx+++X$$$$$$$$$$$$$$$$$$$$Xxx+. */ PostgreSQL /* ..................... Relational data */
-/*           .X$$x+++++xXX$$$$$$$$$$$$$$$$Xxxx:  */ MongoDB /* ....................... Documents, Realm */
-/*            ;xxx++++++xxXXX$$$$$$$$$$XXXxxx:   */ CI-CD /* .................. GitHub Actions, Jenkins */
-/*           .+++++++++++++xXXXXXXXXXXXXxxxx:    */ Timeline /* ─────────────────────────────────────── */
-/*          .;+++++++++++++++xxxXXXXXXxxxxx+     */ HDBank /* ........ 2026.02 -> now  Mobile Developer */
-/*          :;+++++++++++++++xxxxxxXXXxxxxx:     */ q-buzz /* ........ 2026.01 -> now  Mobile Developer */
-/*         :;++++++++++++++++xxxxxxxxxxxx++;     */ MoMo /* ......... 2021 -> 2026.01  Mobile Developer */
-/*        :;;+++++++++++++++++++xxxxxxxx+++:     */ Education /* ────────────────────────────────────── */
-/*       .;;;+++++++++++++++++++++xxxxx++++;     */ UIT /* ....... 2019 -> 2024  Information Technology */
-/*      .:;;;;+++++++++++++++++++++xx+++++++.    */ Contact /* ──────────────────────────────────────── */
-/*     .::;;++++++++++++++++++++++++++++++++.    */ Email /* .................... manhloi0505@gmail.com */
-/*    .:::;+++++++++++++++++++++++++++++++++.    */ LinkedIn /* ......................... loi-pham-manh */
-/*   .::::;+++++++++++++++++++++++++++++++++.    */ GitHub /* ................................. manhIoi */
-/*  .::::;;++++++++++++++++++++++++++x++++++.    */ Facebook /* ............................ manhloi551 */
-/* .:::::;++++++++++++++++++++++++++++++++++.    */ Instagram /* ............................ p.manhloi */
-/* ::::::;;+++++++++++++++++++++++++++++++++.    */ Phone /* .......................... +84 792 465 841 */
-```
+<a href="https://github.com/manhIoi">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/card-dark.svg">
+    <img alt="Pham Manh Loi — Software Engineer, Mobile. HDBank, previously MoMo. React Native, Kotlin, Swift, TypeScript." src="assets/card-light.svg">
+  </picture>
+</a>
