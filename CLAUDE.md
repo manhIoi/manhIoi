@@ -44,7 +44,14 @@ The git history holds the code-block version if that trade ever needs revisiting
 ### Things that will bite
 
 - **The dark portrait is the light one with its tones flipped**, done in
-  `flip_tone` at build time — not a second drawing. Ink density reads as
+  `flip_tone` at build time — not a second drawing. Two details in there are
+  easy to get wrong and both cost a feature: the flip works off `INK`, the
+  *measured* coverage of every glyph the art uses, because the art mixes shade
+  blocks with stray letters and punctuation (`Ü`, `@`, `D`, `»`) whose weight is
+  not guessable — an early version lumped them all at the dense end and the eyes
+  disappeared. And `FLIP_GAMMA` pushes the dark end down, because a straight
+  inversion left the eyes one shade off the surrounding fur and they read as
+  nothing. Ink density reads as
   *darkness* on white but as *brightness* on black, so shipping one file to both
   themes renders the cat's mouth, its darkest feature, as the brightest thing on
   the card. Flipping the `SHADE` ramp in place (spaces stay background) keeps

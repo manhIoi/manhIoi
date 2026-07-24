@@ -125,14 +125,36 @@ FONTS = ("Menlo,'DejaVu Sans Mono','Noto Sans Mono',Consolas,'Cascadia Mono',"
 
 # Ink density reads as *darkness* on a light background but as *brightness* on a
 # dark one, so the one portrait has to be tone-flipped for the dark theme or the
-# cat's mouth — its darkest feature — comes out as the brightest thing on the
-# card. Flipping the ramp in place keeps both themes showing the same drawing.
-SHADE = " .░▒▓█"                       # light ink -> heavy ink
-FLIP = dict(zip(SHADE[1:], reversed(SHADE[1:])))   # spaces stay background
+# cat's mouth — its darkest feature — comes out as the brightest thing on it.
+#
+# The flip is by measured ink coverage, not by a hand-written ramp: the art also
+# contains stray letters and punctuation (`Ü`, `@`, `D`, `»`) whose weight is not
+# obvious by eye, and lumping them all at one end wipes out small dark features.
+# The eyes are two such glyphs, and they vanished when this was a guess.
+INK = {" ": 0.000, "`": 0.022, "'": 0.042, ".": 0.043, ",": 0.063, "-": 0.065,
+       "\u00b2": 0.071, "_": 0.075, ":": 0.077, "!": 0.082, "\u2310": 0.083,
+       '"': 0.083, "\u250c": 0.095, "\u00bb": 0.096, ";": 0.097, "\u2514": 0.108,
+       "|": 0.113, "[": 0.130, "]": 0.130, "=": 0.130, "j": 0.149, "\u2591": 0.152,
+       "\u00fb": 0.194, "H": 0.226, "\u00dc": 0.231, "D": 0.236, "R": 0.242,
+       "@": 0.258, "\u2592": 0.410, "\u2593": 0.661, "\u2588": 0.825}
+OUT = " .:\u2591\u2592\u2593\u2588"          # what the flipped art is drawn with
+MAX = max(INK.values())
+# A straight inversion leaves small dark features barely below the surrounding
+# fur — the eyes came out a shade off the coat and read as nothing. Pushing the
+# dark end down separates them without hollowing out the body.
+FLIP_GAMMA = 1.4
+
 
 def flip_tone(line):
-    # stray marks left over from the source art are its lightest ink
-    return "".join(" " if ch == " " else FLIP.get(ch, "█") for ch in line)
+    out = []
+    for ch in line:
+        if ch == " ":
+            out.append(" ")                     # background stays background
+            continue
+        want = MAX * ((MAX - INK.get(ch, MAX / 2)) / MAX) ** FLIP_GAMMA
+        out.append(min(OUT, key=lambda o: abs(INK[o] - want)))
+    return "".join(out)
+
 
 _art = open(ART_SRC).read().rstrip("\n").split("\n")
 _w = max(len(a) for a in _art)

@@ -1,35 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1052" height="690" viewBox="0 0 1052 690" font-family="Menlo,'DejaVu Sans Mono','Noto Sans Mono',Consolas,'Cascadia Mono',ui-monospace,SFMono-Regular,'Liberation Mono','Courier New',monospace" font-size="14">
   <rect x="0.5" y="0.5" width="1051" height="689" rx="10" fill="#0d1117" stroke="#30363d"/>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="119" textLength="470.40" lengthAdjust="spacing">    █▓▓██                               ▓▓▓██▓▓▓        </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="135" textLength="470.40" lengthAdjust="spacing">   █▒▒▒▒▒▒▓▒█                         █▒▒▒▓█▓▓▓▓█       </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="151" textLength="470.40" lengthAdjust="spacing">   ▒▒▒▒▒▒▒▒▒▒░▒█           █▓▓████████▒▒▒▓▓▓▓▒▒▓█       </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="167" textLength="470.40" lengthAdjust="spacing">   ▒░▒▒▒▒▒▒▒▒▒▒░░▒▒▓██▓▓█▓▒▓▓██      ████▓▓▓▒▒▒▒▓█      </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="183" textLength="470.40" lengthAdjust="spacing">   █▒▒▒▒▒▒▒▒▒▒▒▒░░░░░▒▒▒████████ ███████▓▓▒▒░▒▒▒▓▓      </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="199" textLength="470.40" lengthAdjust="spacing">    █▒▒░░░░░▒▒▒▒▒▒▒▒▒▒▒▒░░░░▒█  ███▒▒▒░░░░▓██████▓▒     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="215" textLength="470.40" lengthAdjust="spacing">      ▓▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒█████▓▓▒▒░░░......░░░▒▒███▒█   </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="231" textLength="470.40" lengthAdjust="spacing">       ▒▒▒▒▒▒░░▒▒▒▒▒▒█████▓▓▒▒░................░░▒▓▒▒▓  </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="247" textLength="470.40" lengthAdjust="spacing">       █▓▓▒▒▒▒▒▒▒░░░▒▓▓▓▒▒▒░.....................░░▒▒▒▓ </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="263" textLength="470.40" lengthAdjust="spacing">        ▓▒▒▒▒▒▒▒░░░▒▒▒▒▒▒▒.........................░░▒▒█</text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="279" textLength="470.40" lengthAdjust="spacing">         ▒░░░░░..░▒▒▒▒▒▒░...........................░▒▒▓</text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="295" textLength="470.40" lengthAdjust="spacing">          ▓░.....░▒▒▒▒▒░............................░░▒▒</text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="311" textLength="470.40" lengthAdjust="spacing">           ▒....░▒▒▒▒▒░.............................░░▒▒</text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="327" textLength="470.40" lengthAdjust="spacing">            ░....░▒▒▒▒▒░...........................░░▒▒▓</text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="343" textLength="470.40" lengthAdjust="spacing">             ░...░▒▒▒▒▒▒░.........................░░▒▒▒ </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="359" textLength="470.40" lengthAdjust="spacing">             █..░▒▒▒▒▒▒▒▒▒░░░░................░░░░▒░▒▒  </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="375" textLength="470.40" lengthAdjust="spacing">             ▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░.......░░░░░░░▒▒▒▒   </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="391" textLength="470.40" lengthAdjust="spacing">            █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░▒▒░░▒▓    </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="407" textLength="470.40" lengthAdjust="spacing">            ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░▒▒█     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="423" textLength="470.40" lengthAdjust="spacing">           ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░▒▒▒▒▒█     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="439" textLength="470.40" lengthAdjust="spacing">          █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="455" textLength="470.40" lengthAdjust="spacing">         █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="471" textLength="470.40" lengthAdjust="spacing">       ██▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="119" textLength="470.40" lengthAdjust="spacing">    ▓▓▓▓▓                               ▓▓▓▒█▓▓▓        </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="135" textLength="470.40" lengthAdjust="spacing">   ▓▒▒▒▒▒▒▓▒▓                         ▓▒▒▒▓▒▓▓▓▓▓       </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="151" textLength="470.40" lengthAdjust="spacing">   ▒▒▒▒▒▒▒▒▒▒:▒▓           ▓▓▓▓▓▓▓▓▓▓▒▒▒▒▓▓▓▓▒▒▓▒       </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="167" textLength="470.40" lengthAdjust="spacing">   ▒:▒▒▒▒▒▒▒▒▒▒::▒▒▓▓▓▓▓▒▓▒▓▓██      █▓█▓▓▓▓▒▒▒▒▓▓      </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="183" textLength="470.40" lengthAdjust="spacing">   █▒▒▒▒▒▒▒▒▒▒▒▒:::::▒▒▒▒█▓▓██▓▓ ▓▓▓▓▓▓▓▓▓▒▒:▒▒▒▓▓      </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="199" textLength="470.40" lengthAdjust="spacing">    █▒▒:::::▒▒▒▒▒▒▒▒▒▒▒▒::::▒▓  ▓██▒▒▒::::▓█▓▓▓█▓▓▒     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="215" textLength="470.40" lengthAdjust="spacing">      ▓▒▒::▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓█▓▓▓▓▓▒▒:::      :::▒▒███▒▓   </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="231" textLength="470.40" lengthAdjust="spacing">       ▒▒▒▒▒▒::▒▒▒▒▒▒▒███▓▓▓▒▒:                ::▒▓▒▒▓  </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="247" textLength="470.40" lengthAdjust="spacing">       ▓▓▓▒▒▒▒▒▒▒:::▒▓▓▓▒▒▒:                     ::▒▒▒▓ </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="263" textLength="470.40" lengthAdjust="spacing">        ▓▒▒▒▒▒▒▒:::▒▒▒▒▒▒▒                         ::▒▒▓</text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="279" textLength="470.40" lengthAdjust="spacing">         ▒:::::  :▒▒▒▒▒▒:                           :▒▒▓</text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="295" textLength="470.40" lengthAdjust="spacing">          ▓:     :▒▒▒▒▒:                            ::▒▒</text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="311" textLength="470.40" lengthAdjust="spacing">           ▒    :▒▒▒▒▒:                             ::▒▒</text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="327" textLength="470.40" lengthAdjust="spacing">            :    :▒▒▒▒▒:                           ::▒▒▓</text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="343" textLength="470.40" lengthAdjust="spacing">             :   :▒▒▒▒▒▒:                         ::▒▒▒ </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="359" textLength="470.40" lengthAdjust="spacing">             ▓  :▒▒▒▒▒▒▒▒▒::::                ::::▒:▒▒  </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="375" textLength="470.40" lengthAdjust="spacing">             ▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒::::::       :::::::▒▒▒▒   </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="391" textLength="470.40" lengthAdjust="spacing">            ▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒:::::::::::::▒▒::▒▓    </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="407" textLength="470.40" lengthAdjust="spacing">            ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒:::::::::▒▒▒     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="423" textLength="470.40" lengthAdjust="spacing">           ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒:::::::▒▒▒▒▒▓     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="439" textLength="470.40" lengthAdjust="spacing">          ▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="455" textLength="470.40" lengthAdjust="spacing">         ▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="471" textLength="470.40" lengthAdjust="spacing">       ▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
   <text style="white-space:pre" fill="#c9d1d9" x="22" y="487" textLength="470.40" lengthAdjust="spacing">      ██▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="503" textLength="470.40" lengthAdjust="spacing">     ███▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█    </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="519" textLength="470.40" lengthAdjust="spacing">   █████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█    </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="535" textLength="470.40" lengthAdjust="spacing">  ██████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓    </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="551" textLength="470.40" lengthAdjust="spacing"> ███████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█    </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="567" textLength="470.40" lengthAdjust="spacing">███████▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
-  <text style="white-space:pre" fill="#c9d1d9" x="22" y="583" textLength="470.40" lengthAdjust="spacing">███████▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="503" textLength="470.40" lengthAdjust="spacing">     ▓▓█▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒    </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="519" textLength="470.40" lengthAdjust="spacing">   ▓██▓█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒    </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="535" textLength="470.40" lengthAdjust="spacing">  ▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓    </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="551" textLength="470.40" lengthAdjust="spacing"> █▓▓▓▓█▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒    </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="567" textLength="470.40" lengthAdjust="spacing">▓█▓▓▓▓█▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
+  <text style="white-space:pre" fill="#c9d1d9" x="22" y="583" textLength="470.40" lengthAdjust="spacing">█▓▓████▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     </text>
   <text style="white-space:pre" y="36"><tspan fill="#f0f6fc" x="517.60" textLength="126.00" lengthAdjust="spacing">manhIoi@github </tspan><tspan fill="#30363d" x="643.60" textLength="386.40" lengthAdjust="spacing">──────────────────────────────────────────────</tspan></text>
   <text style="white-space:pre" y="55"><tspan fill="#6e7681" x="517.60" textLength="25.20" lengthAdjust="spacing"> . </tspan><tspan fill="#3fb950" x="542.80" textLength="33.60" lengthAdjust="spacing">Name</tspan><tspan fill="#6e7681" x="576.40" textLength="16.80" lengthAdjust="spacing">: </tspan><tspan fill="#30363d" x="593.20" textLength="117.60" lengthAdjust="spacing">............. </tspan><tspan fill="#c9d1d9" x="710.80" textLength="109.20" lengthAdjust="spacing">Pham Manh Loi</tspan></text>
   <text style="white-space:pre" y="74"><tspan fill="#6e7681" x="517.60" textLength="25.20" lengthAdjust="spacing"> . </tspan><tspan fill="#3fb950" x="542.80" textLength="33.60" lengthAdjust="spacing">Role</tspan><tspan fill="#6e7681" x="576.40" textLength="16.80" lengthAdjust="spacing">: </tspan><tspan fill="#30363d" x="593.20" textLength="117.60" lengthAdjust="spacing">............. </tspan><tspan fill="#c9d1d9" x="710.80" textLength="210.00" lengthAdjust="spacing">Software Engineer, Mobile</tspan></text>
