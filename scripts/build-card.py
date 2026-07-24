@@ -113,8 +113,11 @@ ROWS = [
 FS, LH, PAD = 14, 19, 22
 CW = FS * 0.6
 GAP = 3 * CW
-FONTS = ("ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,"
-         "'DejaVu Sans Mono','Liberation Mono','Courier New',monospace")
+# Box-drawing glyphs are East-Asian "ambiguous width": a font without them can
+# fall back to a CJK face and render them double-width, which would shear the
+# portrait. Lead with faces that carry the full set at single-cell width.
+FONTS = ("Menlo,'DejaVu Sans Mono','Noto Sans Mono',Consolas,'Cascadia Mono',"
+         "ui-monospace,SFMono-Regular,'Liberation Mono','Courier New',monospace")
 
 ART = open(ART_SRC).read().rstrip("\n").split("\n")
 AW = max(len(a) for a in ART)
@@ -131,7 +134,8 @@ def render(theme):
            f'  <rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="10" '
            f'fill="{c["bg"]}" stroke="{c["border"]}"/>']
     y0 = PAD + FS
-    for n, line in enumerate(ART):
+    off = max(0, (len(ROWS) - len(ART)) // 2)
+    for n, line in enumerate(ART, start=off):
         if line.strip():
             out.append(
                 f'  <text style="white-space:pre" fill="{c["art"]}" x="{PAD}" '
