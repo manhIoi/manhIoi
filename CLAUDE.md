@@ -19,46 +19,53 @@ This is `iammanhIoi/iammanhIoi` — a GitHub profile repository. Its sole purpos
 
 ### The card is one `yaml` fence — and every part of that is load-bearing
 
-The whole card is a **single** ```` ```yaml ```` block: the ASCII art and the info
-panel share each line, art on the left, `Label: value` on the right. Three earlier
-layouts were tried and each failed on GitHub:
+The card is a **single** ```` ```yaml ```` block. Each line is
+`Label: value` on the left, then ` # `, then a slice of the ASCII art. YAML
+gives three colors, one per syntactic slot:
 
-- **Two fences in a `<table>`** (art `text`, panel `http`): renders as *two* grey
-  boxes rather than one card, and the table forces the cells wider than the
-  profile README container, so the right column gets clipped mid-word.
-- **`http` grammar**: its label must be a valid header token, so a line of
-  `<art>   Label:` — which has spaces before the colon — is tagged `pl-ii` and
-  GitHub paints it on a **red background**. Unusable for a combined line.
-- **A generated SVG**: correct colors, but it is an image, so the text cannot be
-  selected, copied, or read by a screen reader.
+| slot | class | dark | light |
+|---|---|---|---|
+| `Label` (key) | `pl-ent` | `#7ee787` green | `#116329` green |
+| value | `pl-s` | `#a5d6ff` blue | `#0a3069` navy |
+| art (after `#`, a comment) | `pl-c` | `#8b949e` grey | `#6e7781` grey |
 
-`yaml` works because its key may contain spaces. Each line parses as
-`<art><spaces>Label` → `pl-ent`, value → `pl-s`. Two colors, consistent on every
-line. Constraints:
+Putting the art in the comment slot is the trick that makes this work. It gives
+the art a neutral grey, which is what the reference profile does, and — because
+YAML never parses inside a comment — the art may contain **any** characters,
+including `:` and `&`. Art on the *left* of the line does not have that freedom:
+it gets swallowed into the key, turning green and breaking on those characters.
 
-- **Every line must contain a colon**, so the panel must have exactly as many
-  rows as the art — no blank spacer lines. Group with the `Section: ─────` rules
-  instead. A colon-less line becomes a plain scalar and loses the key color,
-  which reads as a rendering glitch.
-- **The art may not contain `:` or any YAML indicator.** The source art used the
-  ramp `` .:;+xX$& `` — `:` splits the key early and a leading `&` is parsed as an
-  anchor, both of which scramble the line. It is remapped character-for-character
-  to `` ._;+xX$W `` (`:`→`_`, `&`→`W`), which keeps the density ordering. Any new
-  art must be remapped the same way before it goes in.
-- **Color is per syntactic role, not per word.** Two colors total. There is no way
-  to give "TypeScript" its brand blue or "MoMo" pink inside a fence; ~15 grammars
-  were tested. `ruby` can force three colors by lexical form (`@Foo`, `.Foo`,
-  `Foo`) but its parse is context-dependent, so the same form lands on different
-  classes line to line and looks random. Shields.io badges do give brand colors,
-  but they are images — that trade was tried and rejected.
-- The consequence for content: **anything you want highlighted must be a label.**
-  That is why `Stack` is keyed by language (`TypeScript: … React, Next.js`) rather
-  than by category (`Lang.Code: … TypeScript, Kotlin`).
-- **Keep the total line width under ~95 characters.** The profile README column is
+Constraints:
+
+- **Every line must contain a colon before the `#`**, so the panel must have
+  exactly as many rows as the art — no blank spacer lines. Group with the
+  `Section: ─────` rules instead. A colon-less line loses the key color and
+  reads as a rendering glitch.
+- **Keep total line width under ~95 characters.** The profile README column is
   narrower than a repo page's; past that the block scrolls horizontally.
-- GitHub's light theme renders these as dark green on navy — legible but muted.
-  The design only really pops in dark theme, and that is GitHub's palette, not
-  something the file controls.
+- **Color is per syntactic slot, not per word.** Three colors, that is the
+  ceiling. There is no way to give "TypeScript" its brand blue or "MoMo" pink
+  inside a fence — ~15 grammars were tested. The consequence for content:
+  **anything you want highlighted must be a label**, which is why `Stack` is
+  keyed by language (`TypeScript: … React, Next.js`) rather than by category.
+
+### Approaches that were tried and rejected
+
+- **HTML/CSS.** GitHub's sanitizer strips `style` attributes, `class`
+  attributes, and `<font>` tags outright, and escapes `<style>` blocks into
+  visible text. Verified against the Markdown API — there is no colour control
+  through HTML at all.
+- **A generated SVG** (what `Andrew6rant/Andrew6rant` actually ships — its whole
+  README is a `<picture>` of two `.svg` files). Gives arbitrary per-word colour,
+  but it is an image: the text cannot be selected, copied, or read by a screen
+  reader. Rejected for that reason; re-read this before "fixing" the colours.
+- **Two fences in a `<table>`** (art `text`, panel `http`): renders as *two*
+  grey boxes, and the table sizes its cells wider than the profile column, so
+  the right side is clipped mid-word.
+- **`http` grammar**: its label must be a valid header token, so any line with
+  spaces before the colon is tagged `pl-ii` — a **red background** on GitHub.
+- **`makefile` grammar**: only two slots (purple key, plain value), no neutral
+  slot for the art.
 
 ### What not to add back
 
