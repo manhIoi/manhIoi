@@ -14,25 +14,51 @@ This is `iammanhIoi/iammanhIoi` — a GitHub profile repository. Its sole purpos
 
 ## Working in this repo
 
-- Changes are almost always edits to `README.md` (badges via shields.io, section content, links).
-- There is nothing to build, lint, or test — verify changes by checking the rendered Markdown reads correctly (e.g. via a Markdown preview) rather than running any command.
-- Keep badge/shield URLs and styling consistent with the existing ones when adding new badges.
+- `README.md` is one `yaml` code block and nothing else. Editing it means editing that block — read the section below first, because several obvious-looking edits break the rendering.
+- There is nothing to build, lint, or test. **Do not verify with a local Markdown preview** — IntelliJ's and VS Code's highlighters color this block completely differently from GitHub's, so a local preview will show wrong colors and send you chasing a non-bug. Use the Markdown API call below.
 
-### The info panel's colors
+### The card is one `yaml` fence — and every part of that is load-bearing
 
-The panel is fenced as ```` ```http ````. That is deliberate and load-bearing, not a description of the content: GitHub's HTTP-spec grammar colors `Label:` as `pl-v` (orange) and the rest of the line as `pl-s` (blue), which is what produces the neofetch look. Constraints that follow from it:
+The whole card is a **single** ```` ```yaml ```` block: the ASCII art and the info
+panel share each line, art on the left, `Label: value` on the right. Three earlier
+layouts were tried and each failed on GitHub:
 
-- **Every line must be `Label: value` or blank.** A line without a colon is tagged `pl-ii`, which GitHub renders on a **red background**. That rules out tree/continuation lines (`├── …`, indented wrapped text) inside the panel — one line per entry, always.
-- **The label must be a valid HTTP header token: no spaces, ASCII only.** `2026.02-now:` works; `2026.02 - now:` and `● 2026.02:` are both `pl-ii`. Values are unrestricted, so `─`, `·` and other Unicode are fine to the right of the colon.
-- The *first* line is parsed as the HTTP request line — anything other than a real one (`GET /iammanhIoi HTTP/1.1`) is `pl-ii` too. Keep that line intact.
-- Section rules are written as `Contact: ─────` for the same reason.
-- **Color is per syntactic role, not per word.** The grammar gives exactly two colors — orange label, blue value. There is no way to make "MoMo" pink or "TypeScript" its brand blue inside a fence; ~15 grammars were tested for this. `ruby` can force three colors by lexical form (`@Foo` blue, `.Foo` purple, `Foo` orange) but its parse is context-dependent and the same form lands on different classes line to line, so it looks random.
-- The consequence for content: **anything you want highlighted must be the label, not the value.** That is why the `Stack` section is keyed by language (`TypeScript: … React, Next.js`) instead of by category (`Lang.Code: … TypeScript, Kotlin`) — it puts the language names in the orange slot.
-- Shields.io badges give real brand colors but are images, so the text stops being selectable. That trade was tried and rejected; keep the card all-text.
-- The ASCII portrait sits in a separate `<td>` in a plain ```` ```text ```` fence. It must not share a fence with the panel — the grammar would swallow the art into the `Label:` match and paint it orange.
-- Blank lines around the fences inside `<td>` are required, otherwise GitHub does not parse Markdown inside the HTML block.
+- **Two fences in a `<table>`** (art `text`, panel `http`): renders as *two* grey
+  boxes rather than one card, and the table forces the cells wider than the
+  profile README container, so the right column gets clipped mid-word.
+- **`http` grammar**: its label must be a valid header token, so a line of
+  `<art>   Label:` — which has spaces before the colon — is tagged `pl-ii` and
+  GitHub paints it on a **red background**. Unusable for a combined line.
+- **A generated SVG**: correct colors, but it is an image, so the text cannot be
+  selected, copied, or read by a screen reader.
 
-A colored SVG (like Andrew6rant's profile) was considered and rejected: it is an image, so the text cannot be selected, copied, or read by a screen reader.
+`yaml` works because its key may contain spaces. Each line parses as
+`<art><spaces>Label` → `pl-ent`, value → `pl-s`. Two colors, consistent on every
+line. Constraints:
+
+- **Every line must contain a colon**, so the panel must have exactly as many
+  rows as the art — no blank spacer lines. Group with the `Section: ─────` rules
+  instead. A colon-less line becomes a plain scalar and loses the key color,
+  which reads as a rendering glitch.
+- **The art may not contain `:` or any YAML indicator.** The source art used the
+  ramp `` .:;+xX$& `` — `:` splits the key early and a leading `&` is parsed as an
+  anchor, both of which scramble the line. It is remapped character-for-character
+  to `` ._;+xX$W `` (`:`→`_`, `&`→`W`), which keeps the density ordering. Any new
+  art must be remapped the same way before it goes in.
+- **Color is per syntactic role, not per word.** Two colors total. There is no way
+  to give "TypeScript" its brand blue or "MoMo" pink inside a fence; ~15 grammars
+  were tested. `ruby` can force three colors by lexical form (`@Foo`, `.Foo`,
+  `Foo`) but its parse is context-dependent, so the same form lands on different
+  classes line to line and looks random. Shields.io badges do give brand colors,
+  but they are images — that trade was tried and rejected.
+- The consequence for content: **anything you want highlighted must be a label.**
+  That is why `Stack` is keyed by language (`TypeScript: … React, Next.js`) rather
+  than by category (`Lang.Code: … TypeScript, Kotlin`).
+- **Keep the total line width under ~95 characters.** The profile README column is
+  narrower than a repo page's; past that the block scrolls horizontally.
+- GitHub's light theme renders these as dark green on navy — legible but muted.
+  The design only really pops in dark theme, and that is GitHub's palette, not
+  something the file controls.
 
 ### What not to add back
 
