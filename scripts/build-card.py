@@ -13,7 +13,7 @@ from html import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-ART_SRC = os.path.join(HERE, "art.txt")
+ART_SRC = os.path.join(HERE, "art-{}.txt")   # one per theme
 
 # ---- palette ---------------------------------------------------------------
 # (dark, light). Brand hues are nudged where the true brand colour would be
@@ -119,16 +119,22 @@ GAP = 3 * CW
 FONTS = ("Menlo,'DejaVu Sans Mono','Noto Sans Mono',Consolas,'Cascadia Mono',"
          "ui-monospace,SFMono-Regular,'Liberation Mono','Courier New',monospace")
 
-ART = open(ART_SRC).read().rstrip("\n").split("\n")
-AW = max(len(a) for a in ART)
+# The portrait is tone-mapped per theme. Ink density reads as *darkness* on a
+# light background and as *brightness* on a dark one, so a single rendering is
+# necessarily inverted in one of the two — the dark file maps bright pixels to
+# dense glyphs, the light file maps dark pixels to dense glyphs.
+ARTS = {t: open(ART_SRC.format(t)).read().rstrip("\n").split("\n")
+        for t in ("dark", "light")}
+AW = max(len(a) for arts in ARTS.values() for a in arts)
 PW = max(sum(len(t) for t, _ in r) for r in ROWS if r != "gap")
 W = round(PAD * 2 + AW * CW + GAP + PW * CW)
-H = round(PAD * 2 + max(len(ART), len(ROWS)) * LH)
+H = round(PAD * 2 + max(max(map(len, ARTS.values())), len(ROWS)) * LH)
 
 
 def render(theme):
     i = 0 if theme == "dark" else 1
     c = {k: v[i] for k, v in P.items()}
+    ART = ARTS[theme]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
            f'viewBox="0 0 {W} {H}" font-family="{FONTS}" font-size="{FS}">',
            f'  <rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="10" '
@@ -161,4 +167,6 @@ def render(theme):
 for t in ("dark", "light"):
     with open(os.path.join(ROOT, "assets", f"card-{t}.svg"), "w") as f:
         f.write(render(t))
-print(f"{W}x{H}  art {AW}x{len(ART)}  panel {PW} cols  {len(ROWS)} rows")
+print(f"{W}x{H}  art {AW} cols  "
+      f"{{{', '.join(f'{t}:{len(a)}' for t, a in ARTS.items())}}} rows  "
+      f"panel {PW} cols  {len(ROWS)} rows")
