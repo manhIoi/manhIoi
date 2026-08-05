@@ -11,46 +11,11 @@ its own x and textLength.
 import os
 from html import escape
 
+from theme import FONTS, cw, pick
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 ART_SRC = os.path.join(HERE, "art.txt")
-
-# ---- palette ---------------------------------------------------------------
-# (dark, light). Brand hues are nudged where the true brand colour would be
-# illegible against one of the two backgrounds.
-P = {
-    "bg":     ("#0d1117", "#ffffff"),
-    "border": ("#30363d", "#d0d7de"),
-    "art":    ("#c9d1d9", "#24292f"),   # neutral, matches the value colour
-    "value":  ("#c9d1d9", "#24292f"),
-    "label":  ("#3fb950", "#1a7f37"),   # green in both themes
-    "head":   ("#f0f6fc", "#1f2328"),
-    "rule":   ("#30363d", "#d8dee4"),
-    "dim":    ("#6e7681", "#8c959f"),
-
-    "TypeScript": ("#3178C6", "#2F74C0"),
-    "Kotlin":     ("#A277FF", "#7F52FF"),
-    "Swift":      ("#F05138", "#D63A22"),
-    "JavaScript": ("#F7DF1E", "#9A8700"),
-    "React":      ("#61DAFB", "#0B8CA8"),
-    "Next.js":    ("#ffffff", "#000000"),
-    "Node.js":    ("#6BBF59", "#417E38"),
-    "Vue.js":     ("#4FC08D", "#2F8F63"),
-    "PostgreSQL": ("#6E8FF0", "#31648C"),
-    "MongoDB":    ("#4DB33D", "#2E7D32"),
-    "Realm":      ("#8E9AD6", "#39477F"),
-    "Compose":    ("#7CB0F7", "#2C5FB3"),
-    "SwiftUI":    ("#FF9F6B", "#B34700"),
-    "Android":    ("#3DDC84", "#1F8B4C"),
-    "watchOS":    ("#d0d7de", "#57606a"),
-    "Jenkins":    ("#E8756B", "#B4352A"),
-    "Actions":    ("#79C0FF", "#0969DA"),
-
-    "Q.Buzz": ("#38BDF8", "#0369A1"),
-    "HDBank": ("#FF6B5E", "#E2231A"),
-    "MoMo":   ("#F072B6", "#A50064"),
-    "UIT":    ("#79C0FF", "#005BAA"),
-}
 
 # ---- content ---------------------------------------------------------------
 # Each row is a list of (text, colour-key) segments. "gap" is a blank line.
@@ -115,13 +80,8 @@ FS, LH, PAD = 14, 19, 22
 # between rows and the portrait breaks up into horizontal bars. Pack the art rows
 # tight enough that the blocks meet.
 ART_LH = 16
-CW = FS * 0.6
+CW = cw(FS)
 GAP = 3 * CW
-# Box-drawing glyphs are East-Asian "ambiguous width": a font without them can
-# fall back to a CJK face and render them double-width, which would shear the
-# portrait. Lead with faces that carry the full set at single-cell width.
-FONTS = ("Menlo,'DejaVu Sans Mono','Noto Sans Mono',Consolas,'Cascadia Mono',"
-         "ui-monospace,SFMono-Regular,'Liberation Mono','Courier New',monospace")
 
 # Ink density reads as *darkness* on a light background but as *brightness* on a
 # dark one, so the one portrait has to be tone-flipped for the dark theme or the
@@ -167,8 +127,7 @@ H = round(PAD * 2 + max(max(map(len, ARTS.values())), len(ROWS)) * LH)
 
 
 def render(theme):
-    i = 0 if theme == "dark" else 1
-    c = {k: v[i] for k, v in P.items()}
+    c = pick(theme)
     ART = ARTS[theme]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
            f'viewBox="0 0 {W} {H}" font-family="{FONTS}" font-size="{FS}">',
