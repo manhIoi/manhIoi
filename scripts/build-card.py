@@ -19,46 +19,49 @@ ART_SRC = os.path.join(HERE, "art.txt")
 
 # ---- content ---------------------------------------------------------------
 # Each row is a list of (text, colour-key) segments. "gap" is a blank line.
+# No dotted leaders. They exist to carry the eye across a gap to a value in a
+# column, and once every row is centred there is no column to carry it to — the
+# leaders just opened a hole in the middle of each line.
 def L(label, *value):
     return [(" . ", "dim"), (label, "label"), (": ", "dim"), *value]
 
-def dots(n):
-    return ("." * n + " ", "rule")
-
 ROWS = [
     [("manhIoi@github ", "head"), ("─" * 46, "rule")],
-    L("Name",       dots(13), ("Pham Manh Loi", "value")),
-    L("Role",       dots(13), ("Software Engineer, Mobile", "value")),
-    L("Focus",      dots(12), ("Fintech, payments, wearables", "value")),
-    L("Location",   dots(9),  ("Vietnam", "value")),
-    L("Speaks",     dots(11), ("Vietnamese, English", "value")),
-    L("Uptime",     dots(11), ("5+ years in production", "value")),
+    L("Name",     ("Pham Manh Loi", "value")),
+    L("Role",     ("Software Engineer, Mobile", "value")),
+    L("Focus",    ("Fintech, payments, wearables", "value")),
+    L("Location", ("Vietnam", "value")),
+    L("Speaks",   ("Vietnamese, English", "value")),
+    L("Uptime",   ("5+ years in production", "value")),
     "gap",
     [("─ Stack ", "head"), ("─" * 45, "rule")],
-    L("Mobile",  dots(11), ("React Native", "React"), (", ", "value"),
-                           ("Kotlin", "Kotlin"), (", ", "value"), ("Swift", "Swift")),
-    L("Native",  dots(11), ("Compose", "Compose"), (", ", "value"),
-                           ("SwiftUI", "SwiftUI"), (", ", "value"),
-                           ("Android", "Android"), (", ", "value"), ("watchOS", "watchOS")),
-    L("Web",     dots(14), ("TypeScript", "TypeScript"), (", ", "value"),
-                           ("React", "React"), (", ", "value"),
-                           ("Next.js", "Next.js"), (", ", "value"), ("Vue.js", "Vue.js")),
-    L("Runtime", dots(10), ("Node.js", "Node.js"), (", ", "value"),
-                           ("JavaScript", "JavaScript")),
-    L("Data",    dots(13), ("PostgreSQL", "PostgreSQL"), (", ", "value"),
-                           ("MongoDB", "MongoDB"), (", ", "value"), ("Realm", "Realm")),
-    L("CI/CD",   dots(12), ("GitHub Actions", "Actions"), (", ", "value"),
-                           ("Jenkins", "Jenkins")),
+    L("Mobile",  ("React Native", "React"), (", ", "value"),
+                 ("Kotlin", "Kotlin"), (", ", "value"), ("Swift", "Swift")),
+    L("Native",  ("Compose", "Compose"), (", ", "value"),
+                 ("SwiftUI", "SwiftUI"), (", ", "value"),
+                 ("Android", "Android"), (", ", "value"), ("watchOS", "watchOS")),
+    L("Web",     ("TypeScript", "TypeScript"), (", ", "value"),
+                 ("React", "React"), (", ", "value"),
+                 ("Next.js", "Next.js"), (", ", "value"), ("Vue.js", "Vue.js")),
+    L("Runtime", ("Node.js", "Node.js"), (", ", "value"),
+                 ("JavaScript", "JavaScript")),
+    L("Data",    ("PostgreSQL", "PostgreSQL"), (", ", "value"),
+                 ("MongoDB", "MongoDB"), (", ", "value"), ("Realm", "Realm")),
+    L("CI/CD",   ("GitHub Actions", "Actions"), (", ", "value"),
+                 ("Jenkins", "Jenkins")),
     "gap",
     [("─ Timeline ", "head"), ("─" * 42, "rule")],
+    # The date columns used to be padded out to align down the card. Centred rows
+    # cannot align on an interior column, so that padding is only a hole in the
+    # middle of the line now — same reason the dotted leaders went.
     [("   ● ", "HDBank"), ("HDBank", "HDBank"),
-     ("  Mobile Developer", "value"), ("        2026.02 → now", "dim")],
+     ("  Mobile Developer", "value"), ("  2026.02 → now", "dim")],
     [("   │ ", "rule"), ("Mobile banking and payment platform", "dim")],
     [("   ● ", "Q.Buzz"), ("Q.Buzz", "Q.Buzz"),
-     ("  Mobile Developer", "value"), ("        2026.01 → now", "dim")],
+     ("  Mobile Developer", "value"), ("  2026.01 → now", "dim")],
     [("   │ ", "rule"), ("Daily habit tracking, health insights", "dim")],
     [("   ● ", "MoMo"), ("MoMo", "MoMo"), ("  Mobile Developer", "value"),
-     ("          2021 → 2026.01", "dim")],
+     ("  2021 → 2026.01", "dim")],
     [("     ", "rule"), ("Super-app, e-wallet, wearable payments", "dim")],
     "gap",
     [("─ Education ", "head"), ("─" * 41, "rule")],
@@ -66,12 +69,12 @@ ROWS = [
      ("  2019 → 2024", "dim")],
     "gap",
     [("─ Contact ", "head"), ("─" * 43, "rule")],
-    L("Email",     dots(12), ("manhloi0505@gmail.com", "value")),
-    L("LinkedIn",  dots(9),  ("loi-pham-manh", "value")),
-    L("GitHub",    dots(11), ("manhIoi", "value")),
-    L("Facebook",  dots(9),  ("manhloi551", "value")),
-    L("Instagram", dots(8),  ("p.manhloi", "value")),
-    L("Phone",     dots(12), ("+84 792 465 841", "value")),
+    L("Email",     ("manhloi0505@gmail.com", "value")),
+    L("LinkedIn",  ("loi-pham-manh", "value")),
+    L("GitHub",    ("manhIoi", "value")),
+    L("Facebook",  ("manhloi551", "value")),
+    L("Instagram", ("p.manhloi", "value")),
+    L("Phone",     ("+84 792 465 841", "value")),
 ]
 
 # ---- geometry --------------------------------------------------------------
@@ -142,7 +145,14 @@ def _row_cols(r):
     return sum(len(t) for t, _ in r)
 
 
-PW = max(_row_cols(r) for r in ROWS if r != "gap")
+def _is_rule(r):
+    """A section header, i.e. a row whose last segment is a run of box-drawing."""
+    return r != "gap" and bool(r) and r[-1][1] == "rule" and set(r[-1][0]) == {"─"}
+
+
+# Measured over content rows only, so the dividers take their length from the
+# content instead of the content being sized to fit a divider chosen by hand.
+CONTENT_W = max(_row_cols(r) for r in ROWS if r != "gap" and not _is_rule(r))
 
 
 def _stretch_rules(rows, target):
@@ -155,15 +165,21 @@ def _stretch_rules(rows, target):
     """
     out = []
     for r in rows:
-        if r != "gap" and r and r[-1][1] == "rule" and set(r[-1][0]) == {"─"}:
+        if _is_rule(r):
             r = list(r[:-1]) + [("─" * (target - _row_cols(r[:-1])), "rule")]
         out.append(r)
     return out
 
 
-ROWS = _stretch_rules(ROWS, PW)
 # Stacked, so width is whichever block is wider rather than the sum of both.
-W = round(PAD * 2 + max(AW * ART_CW, PW * CW))
+INNER = max(AW * ART_CW, CONTENT_W * CW)
+W = round(PAD * 2 + INNER)
+# The dividers span the card's full inner width, which is the portrait's width
+# here. Sizing them to the content instead would leave them visibly narrower than
+# the picture directly above them. Floor, so a rule can never overrun the inner
+# width by a fraction of a cell.
+PW = int(INNER / CW)
+ROWS = _stretch_rules(ROWS, PW)
 H = round(PAD * 2 + AH * ART_LH + VGAP + len(ROWS) * LH)
 
 

@@ -23,7 +23,7 @@ Regenerate and eyeball in a real browser — the SVG uses `textLength`, which ma
 ```sh
 python3 scripts/build-card.py && python3 scripts/build_intro.py
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
-  --screenshot=out.png --window-size=556,1188 assets/card-dark.svg
+  --screenshot=out.png --window-size=514,1188 assets/card-dark.svg
 ```
 
 ### Why an SVG and not a code block
@@ -85,7 +85,7 @@ The git history holds the code-block version if that trade ever needs revisiting
   Measured on the live profile, the old 120-column card (portrait 56 + gap 3 +
   panel 61) rendered at 0.79 scale, so its 14px text arrived as ~11px, and 18px
   would have arrived as ~11.1px. That is why the layout is stacked rather than
-  side by side: at 61 columns the card is 556px, well under the cap, so it renders
+  side by side: at 56 columns the card is 514px, well under the cap, so it renders
   1:1 and 14px is really 14px. Keep `W <= 830`. Widening the panel content costs
   text size, and the portrait's `ART_FS` is separate precisely so the picture
   cannot drag the width back up.
@@ -107,9 +107,18 @@ The git history holds the code-block version if that trade ever needs revisiting
   `. Label` rows one, and counting that padding as content pushes them right of
   centre; and `_stretch_rules` pads every section rule out to `PW` so the
   dividers are flush on both sides, since rules of different lengths would centre
-  at different widths and step in and out down the card. The cost is that the
-  label column no longer lines up vertically — that is inherent to centring rows
-  of different lengths, not a bug.
+  at different widths and step in and out down the card. `PW` is floored from the
+  inner width so a rule can never overrun it, and it works out to the portrait's
+  56 columns, which is what makes the dividers line up with the picture above.
+  The cost is that the label column no longer lines up vertically — that is
+  inherent to centring rows of different lengths, not a bug.
+- **Nothing may pad out to an interior column any more.** The dotted leaders and
+  the run of spaces before each timeline date both existed to align a value
+  column down a left-aligned panel. Centred rows have no interior column to align
+  on, so that padding only opens a hole in the middle of the line — both were
+  removed, and `check_card_golden.sh` fails if leader dots reappear. `CONTENT_W`
+  is measured over content rows only, so adding a row longer than the portrait is
+  what widens the card; the dividers then follow the width rather than set it.
 - **The intro centres each sentence separately, so the prompt moves.** `START[i]`
   centres a block of prompt + sentence + cursor, and the `+ 1` for the cursor cell
   matters: leave it out and every line sits half a character right of centre. The
