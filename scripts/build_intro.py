@@ -46,7 +46,7 @@ def _card_width():
 SENTENCES = [
     "Hi, I'm Manh Loi",
     "Software Engineer, Mobile",
-    "Fintech, payments, wearables",
+    "Fintech, health tracking",
     "5+ years shipping to production",
 ]
 PROMPT = "$ "          # ASCII on purpose: no ambiguous-width fallback risk

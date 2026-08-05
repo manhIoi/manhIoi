@@ -28,9 +28,9 @@ ART_SRC = os.path.join(HERE, "art.txt")
 # read as symmetrical, and right-aligning is also what keeps it gapless — the
 # label always ends flush against its colon, so there is nothing for a dotted
 # leader to span.
-LABELS = ["Name", "Role", "Focus", "Location", "Speaks", "Uptime",
-          "Mobile", "Native", "Web", "Runtime", "Data", "CI/CD",
-          "Email", "LinkedIn", "GitHub", "Facebook", "Instagram", "Phone"]
+LABELS = ["Name", "Role", "Domain",
+          "Mobile", "Web", "Backend", "Database", "CI/CD",
+          "Email", "LinkedIn", "GitHub", "Phone", "Location"]
 LW = max(map(len, LABELS))          # the colon column
 
 
@@ -69,28 +69,21 @@ def _is_hdr(r):
 
 ROWS = [
     H("manhIoi@github"),
-    L("Name",     ("Pham Manh Loi", "value")),
-    L("Role",     ("Software Engineer, Mobile", "value")),
-    L("Focus",    ("Fintech, payments, wearables", "value")),
-    L("Location", ("Vietnam", "value")),
-    L("Speaks",   ("Vietnamese, English", "value")),
-    L("Uptime",   ("5+ years in production", "value")),
+    L("Name",   ("Pham Manh Loi", "value")),
+    L("Role",   ("Software Engineer, Mobile", "value")),
+    L("Domain", ("Fintech, health tracking", "value")),
     "gap",
     H("Stack"),
-    L("Mobile",  ("React Native", "React"), (", ", "value"),
-                 ("Kotlin", "Kotlin"), (", ", "value"), ("Swift", "Swift")),
-    L("Native",  ("Compose", "Compose"), (", ", "value"),
-                 ("SwiftUI", "SwiftUI"), (", ", "value"),
-                 ("Android", "Android"), (", ", "value"), ("watchOS", "watchOS")),
-    L("Web",     ("TypeScript", "TypeScript"), (", ", "value"),
-                 ("React", "React"), (", ", "value"),
-                 ("Next.js", "Next.js"), (", ", "value"), ("Vue.js", "Vue.js")),
-    L("Runtime", ("Node.js", "Node.js"), (", ", "value"),
-                 ("JavaScript", "JavaScript")),
-    L("Data",    ("PostgreSQL", "PostgreSQL"), (", ", "value"),
-                 ("MongoDB", "MongoDB"), (", ", "value"), ("Realm", "Realm")),
-    L("CI/CD",   ("GitHub Actions", "Actions"), (", ", "value"),
-                 ("Jenkins", "Jenkins")),
+    L("Mobile",   ("React Native", "React"), (", ", "value"),
+                  ("Kotlin", "Kotlin"), (", ", "value"), ("Swift", "Swift")),
+    L("Web",      ("TypeScript", "TypeScript"), (", ", "value"),
+                  ("React", "React"), (", ", "value"),
+                  ("Next.js", "Next.js"), (", ", "value"), ("Vue.js", "Vue.js")),
+    L("Backend",  ("Node.js", "Node.js"), (", ", "value"), (".NET", ".NET")),
+    L("Database", ("PostgreSQL", "PostgreSQL"), (", ", "value"),
+                  ("MongoDB", "MongoDB")),
+    L("CI/CD",    ("GitHub Actions", "Actions"), (", ", "value"),
+                  ("Jenkins", "Jenkins")),
     "gap",
     H("Timeline"),
     T("HDBank", "Mobile Developer", "2026.02 → now"),
@@ -104,12 +97,11 @@ ROWS = [
     T("UIT", "Information Technology", "2019 → 2024"),
     "gap",
     H("Contact"),
-    L("Email",     ("manhloi0505@gmail.com", "value")),
-    L("LinkedIn",  ("loi-pham-manh", "value")),
-    L("GitHub",    ("manhIoi", "value")),
-    L("Facebook",  ("manhloi551", "value")),
-    L("Instagram", ("p.manhloi", "value")),
-    L("Phone",     ("+84 792 465 841", "value")),
+    L("Email",    ("manhloi0505@gmail.com", "value")),
+    L("LinkedIn", ("loi-pham-manh", "value")),
+    L("GitHub",   ("manhIoi", "value")),
+    L("Phone",    ("+84 792 465 841", "value")),
+    L("Location", ("Vietnam", "value")),
 ]
 
 # ---- geometry --------------------------------------------------------------

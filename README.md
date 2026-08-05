@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/intro-dark.svg">
-    <img alt="Hi, I'm Manh Loi. Software Engineer, Mobile. Fintech, payments, wearables. 5+ years shipping to production." src="assets/intro-light.svg">
+    <img alt="Hi, I'm Manh Loi. Software Engineer, Mobile. Fintech, health tracking. 5+ years shipping to production." src="assets/intro-light.svg">
   </picture>
 </p>
 

@@ -30,6 +30,10 @@ P = {
     "React":      ("#61DAFB", "#0B8CA8"),
     "Next.js":    ("#ffffff", "#000000"),
     "Node.js":    ("#6BBF59", "#417E38"),
+    # .NET's #512BD4 is unreadable on the dark background, so the dark side is
+    # lightened. Kept bluer than Kotlin's purple so the two do not read as one
+    # colour used twice by mistake.
+    ".NET":       ("#8F7AE5", "#512BD4"),
     "Vue.js":     ("#4FC08D", "#2F8F63"),
     "PostgreSQL": ("#6E8FF0", "#31648C"),
     "MongoDB":    ("#4DB33D", "#2E7D32"),
