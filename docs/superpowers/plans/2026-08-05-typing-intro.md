@@ -287,7 +287,7 @@ PY
 Run: `python3 "$SP/check_intro_geom.py"`
 Expected: FAIL — `ModuleNotFoundError: No module named 'build_intro'`.
 
-- [ ] **Step 3: Write `scripts/build-intro.py`**
+- [ ] **Step 3: Write `scripts/build_intro.py`**
 
 Create it as `scripts/build_intro.py`. The spec called it `build-intro.py`; that is unimportable, and both check scripts import it.
 
@@ -883,7 +883,10 @@ before `i+1` begins. Sentence 0 emits 5 keyframes, the rest 6.
 **Known limits of this plan's verification.** The sliced-glyph failure has no
 automated gate — it is font-dependent, so it renders correctly on the author's
 machine by construction. Task 4 step 4 is a human read of two PNGs and cannot be
-delegated to a `PASS` string. The caret gate in step 3 needs Pillow; without it
-that check degrades to the same visual read.
+delegated to a `PASS` string.
+
+Pillow 12.3.0 is installed on this machine, confirmed before handoff, so the
+caret gate in Task 4 step 3 does run as an assertion rather than degrading to a
+visual read.
 
 **Unused variable:** Task 2's `gate_off` is always `0.0`; it is kept as a named read of `frames()[0][0]` rather than a bare literal so the gate and the clip cannot drift apart. Harmless.
