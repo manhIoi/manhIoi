@@ -15,12 +15,32 @@ The cursor steps over the same n*CW with the same steps(n), so it cannot drift
 off the end of the text.
 """
 import os
+import re
 from html import escape
 
 from theme import FONTS, cw, pick
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+
+
+def _card_width():
+    """The card's width, read from the card itself.
+
+    The two images sit one above the other on the profile, so a width mismatch
+    shows up twice: as misaligned blocks, and as different apparent text sizes,
+    since GitHub scales each image to the README column independently. Reading it
+    from the generated card rather than repeating the number means editing ROWS
+    can never silently desynchronise them — build the card first, which is the
+    order CLAUDE.md documents.
+    """
+    card = os.path.join(ROOT, "assets", "card-dark.svg")
+    with open(card) as f:
+        head = f.read(300)
+    m = re.search(r'width="(\d+)"', head)
+    if not m:
+        raise SystemExit(f"cannot read a width from {card}; run build-card.py first")
+    return int(m.group(1))
 
 # ---- content ---------------------------------------------------------------
 SENTENCES = [
@@ -32,8 +52,8 @@ SENTENCES = [
 PROMPT = "$ "          # ASCII on purpose: no ambiguous-width fallback risk
 
 # ---- geometry --------------------------------------------------------------
-# W is the card's width, not an independent choice. build-card.py prints it.
-W = 1052
+# W is the card's width, not an independent choice.
+W = _card_width()
 FS = 18                # a headline, deliberately larger than the card's 14
 CW = cw(FS)
 PAD_X, PAD_Y = 22, 14  # PAD_X matches the card's PAD so both share a left edge

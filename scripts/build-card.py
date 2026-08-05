@@ -75,13 +75,27 @@ ROWS = [
 ]
 
 # ---- geometry --------------------------------------------------------------
-FS, LH, PAD = 14, 19, 22
-# Block glyphs fill their em box, so at the panel's 19px leading they leave a gap
+# The panel is 18px, not 14px, and that is a width decision rather than a taste
+# one. GitHub caps the README column at ~830px, so a card wider than that is
+# scaled down to fit and the reader sees FS * 830/W, never FS. Because W grows in
+# proportion to FS, raising the font size alone cancels itself out exactly — the
+# ceiling is 830/(0.6 * columns), so the only way to make the text bigger is to
+# use fewer character columns. Hence the stacked layout below: side by side the
+# card was 120 columns wide (56 of portrait + 3 + 61 of panel) and 14px text
+# arrived as ~11px; stacked it is 61 columns and 703px wide, which is under the
+# cap, so 18px arrives as 18px.
+FS, LH, PAD = 18, 24, 22
+# The portrait keeps the smaller type it was drawn for. It does not need to match
+# the panel — a bigger portrait would only add height, and stacking already costs
+# plenty of that.
+ART_FS = 14
+ART_CW = cw(ART_FS)
+# Block glyphs fill their em box, so at the panel's leading they leave a gap
 # between rows and the portrait breaks up into horizontal bars. Pack the art rows
 # tight enough that the blocks meet.
 ART_LH = 16
 CW = cw(FS)
-GAP = 3 * CW
+VGAP = 18                  # breathing room between the portrait and the panel
 
 # Ink density reads as *darkness* on a light background but as *brightness* on a
 # dark one, so the one portrait has to be tone-flipped for the dark theme or the
@@ -121,9 +135,11 @@ _w = max(len(a) for a in _art)
 ARTS = {"light": [a.ljust(_w) for a in _art],
         "dark":  [flip_tone(a.ljust(_w)) for a in _art]}
 AW = _w
+AH = max(map(len, ARTS.values()))
 PW = max(sum(len(t) for t, _ in r) for r in ROWS if r != "gap")
-W = round(PAD * 2 + AW * CW + GAP + PW * CW)
-H = round(PAD * 2 + max(max(map(len, ARTS.values())), len(ROWS)) * LH)
+# Stacked, so width is whichever block is wider rather than the sum of both.
+W = round(PAD * 2 + max(AW * ART_CW, PW * CW))
+H = round(PAD * 2 + AH * ART_LH + VGAP + len(ROWS) * LH)
 
 
 def render(theme):
@@ -131,22 +147,28 @@ def render(theme):
     ART = ARTS[theme]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
            f'viewBox="0 0 {W} {H}" font-family="{FONTS}" font-size="{FS}">',
-           f'  <rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="10" '
-           f'fill="{c["bg"]}" stroke="{c["border"]}"/>']
-    y0 = PAD + FS
-    art_h = len(ART) * ART_LH
-    ay = PAD + FS + max(0, (len(ROWS) * LH - art_h) // 2)
+           # No stroke: the border read as a box drawn around the card with the
+           # intro line stranded outside it. The fill stays, and it has to — a
+           # reader whose GitHub theme is Dark while their OS is Light gets the
+           # light card on a dark page, and only an opaque background keeps the
+           # dark text on it legible.
+           f'  <rect width="{W}" height="{H}" rx="10" fill="{c["bg"]}"/>']
+    # Portrait on top, centred: it keeps its smaller type so it is narrower than
+    # the panel that sets the card's width.
+    ax = (W - AW * ART_CW) / 2
+    ay = PAD + ART_FS
     for n, line in enumerate(ART):
         if line.strip():
             out.append(
-                f'  <text style="white-space:pre" fill="{c["art"]}" x="{PAD}" '
-                f'y="{ay + n*ART_LH}" textLength="{len(line)*CW:.2f}" '
+                f'  <text style="white-space:pre" font-size="{ART_FS}" '
+                f'fill="{c["art"]}" x="{ax:.2f}" '
+                f'y="{ay + n*ART_LH}" textLength="{len(line)*ART_CW:.2f}" '
                 f'lengthAdjust="spacing">{escape(line)}</text>')
-    x0 = AW + 3
+    y0 = PAD + AH * ART_LH + VGAP + FS
     for n, row in enumerate(ROWS):
         if row == "gap":
             continue
-        col, spans = x0, []
+        col, spans = 0, []
         for text, key in row:
             spans.append(
                 f'<tspan fill="{c[key]}" x="{PAD + col*CW:.2f}" '
