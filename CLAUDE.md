@@ -8,9 +8,11 @@ This is `manhIoi/manhIoi` — a GitHub profile repository. Its sole purpose is t
 
 ## Structure
 
-- `README.md` — six lines: a `<picture>` that swaps between two generated SVGs. Do not put anything else on the profile page; see "What not to add back".
-- `assets/card-dark.svg`, `assets/card-light.svg` — **generated, never hand-edit.**
-- `scripts/build-card.py` — the generator. Edit `P` (palette) or `ROWS` (content) and run `python3 scripts/build-card.py`. Needs Pillow only if `art.txt` is being re-rendered from a photo; the build itself is stdlib.
+- `README.md` — two `<picture>` blocks: the typing intro line, then the card. Both swap between a dark and a light generated SVG. Nothing else belongs on the profile page; see "What not to add back".
+- `assets/card-{dark,light}.svg`, `assets/intro-{dark,light}.svg` — **generated, never hand-edit.**
+- `scripts/theme.py` — the palette and font stack, shared by both generators. Type metrics are per-generator: the card is 14px, the intro 18px.
+- `scripts/build-card.py` — the card generator. Edit `ROWS` for content, `scripts/theme.py` for colour, then run it. Needs Pillow only if `art.txt` is being re-rendered from a photo; the build itself is stdlib.
+- `scripts/build_intro.py` — the intro generator. Edit `SENTENCES` or the timing constants, then run it. Underscored, not hyphenated, so it can be imported.
 - `scripts/art.txt` — the ASCII portrait. Authored for a light background; the dark variant is derived from it at build time.
 - `AGENTS.md` — stale inherited boilerplate describing a `skills/` layout that does not exist here. Ignore it.
 
@@ -19,9 +21,9 @@ This is `manhIoi/manhIoi` — a GitHub profile repository. Its sole purpose is t
 Regenerate and eyeball in a real browser — the SVG uses `textLength`, which macOS QuickLook (`qlmanage`) gets wrong, so it is not a valid preview:
 
 ```sh
-python3 scripts/build-card.py
+python3 scripts/build-card.py && python3 scripts/build_intro.py
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
-  --screenshot=out.png --window-size=1027,690 assets/card-dark.svg
+  --screenshot=out.png --window-size=1052,690 assets/card-dark.svg
 ```
 
 ### Why an SVG and not a code block
@@ -76,6 +78,28 @@ The git history holds the code-block version if that trade ever needs revisiting
   A reader whose GitHub theme is set explicitly to Dark while their OS is Light
   gets the light card on a dark page. Only "Sync with system" matches. Nothing in
   this repo can fix that — it is inherent to `<picture>`.
+- **The intro's `steps(n)` is coupled to `textLength`.** Typing is a clip rect
+  whose width steps from 0 to `n * CW`, which only lands on character boundaries
+  because each `<text>` is pinned to exactly that width with `textLength` and
+  `lengthAdjust="spacing"`. Drop either and the animation slices glyphs in half
+  for any reader whose monospace font is not yours — the failure is invisible
+  locally. The cursor steps over the same `n * CW`; give it a percentage instead
+  and it drifts off the end of the text.
+- **A still screenshot cannot verify the intro, and `--virtual-time-budget` does
+  not help.** It does not advance CSS animation time for an SVG inside an `<img>`
+  — two budgets produce byte-identical frames even though the animation is
+  running. To capture a chosen moment, copy the SVG and inject
+  `.clip,.caret,.cg{animation-delay:-2200ms!important}` before `</style>`.
+  `!important` is required: the shipped rules select by `#id` and their
+  `animation` shorthand resets the delay to `0s`, so a class rule loses on
+  specificity. Load the copy through an `<img>` — opening a `.svg` directly is a
+  document context and permits more than GitHub's `<img>` does.
+- **Headless capture lands ~0.55s into the animation, and not stably.** So aim
+  measurements at the middle of a multi-second hold, never a precise instant, and
+  freeze the 1s blink (`#caretN{animation-name:caretN!important}`) before
+  measuring the caret's position — otherwise the caret is missing from the frame
+  half the time and it looks like `x` is not animating. It is; CSS `x` on a
+  `<rect>` works in Chrome.
 
 ### What not to add back
 
