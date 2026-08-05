@@ -99,6 +99,17 @@ The git history holds the code-block version if that trade ever needs revisiting
   also drop the `fill` to make it transparent: a reader whose GitHub theme is set
   to Dark while their OS is Light gets the *light* card on a dark page, and the
   opaque background is the only thing keeping that dark text legible.
+- **Every panel row is centred individually, on its visible run.** The portrait
+  above it is centred, so a left-aligned panel read as off to one side — that
+  alignment was a leftover from when the panel sat beside the portrait. Two
+  details: centring uses the row's text with leading and trailing spaces
+  stripped, because the timeline rows are indented three cells and the
+  `. Label` rows one, and counting that padding as content pushes them right of
+  centre; and `_stretch_rules` pads every section rule out to `PW` so the
+  dividers are flush on both sides, since rules of different lengths would centre
+  at different widths and step in and out down the card. The cost is that the
+  label column no longer lines up vertically — that is inherent to centring rows
+  of different lengths, not a bug.
 - **The intro centres each sentence separately, so the prompt moves.** `START[i]`
   centres a block of prompt + sentence + cursor, and the `+ 1` for the cursor cell
   matters: leave it out and every line sits half a character right of centre. The

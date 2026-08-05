@@ -136,7 +136,32 @@ ARTS = {"light": [a.ljust(_w) for a in _art],
         "dark":  [flip_tone(a.ljust(_w)) for a in _art]}
 AW = _w
 AH = max(map(len, ARTS.values()))
-PW = max(sum(len(t) for t, _ in r) for r in ROWS if r != "gap")
+
+
+def _row_cols(r):
+    return sum(len(t) for t, _ in r)
+
+
+PW = max(_row_cols(r) for r in ROWS if r != "gap")
+
+
+def _stretch_rules(rows, target):
+    """Make every section rule reach the same column.
+
+    Each row is centred individually, so rules of different lengths would centre
+    at different widths and the dividers would step in and out down the card.
+    Stretching them all to the panel width makes them flush on both sides, which
+    is what gives the centred rows something symmetrical to sit between.
+    """
+    out = []
+    for r in rows:
+        if r != "gap" and r and r[-1][1] == "rule" and set(r[-1][0]) == {"─"}:
+            r = list(r[:-1]) + [("─" * (target - _row_cols(r[:-1])), "rule")]
+        out.append(r)
+    return out
+
+
+ROWS = _stretch_rules(ROWS, PW)
 # Stacked, so width is whichever block is wider rather than the sum of both.
 W = round(PAD * 2 + max(AW * ART_CW, PW * CW))
 H = round(PAD * 2 + AH * ART_LH + VGAP + len(ROWS) * LH)
@@ -168,13 +193,24 @@ def render(theme):
     for n, row in enumerate(ROWS):
         if row == "gap":
             continue
-        col, spans = 0, []
+        # Each row is centred on the card. The portrait above it is centred too,
+        # so anything left-aligned here reads as off to one side — that alignment
+        # was a leftover from when the panel sat to the right of the portrait.
+        #
+        # Centre the *visible* run, not the raw cell count: the timeline rows are
+        # indented three cells and the ". Label" rows one, so counting that
+        # padding as content would push every one of them right of centre.
+        flat = "".join(t for t, _ in row)
+        lead = len(flat) - len(flat.lstrip(" "))
+        visible = len(flat.strip(" "))
+        x = (W - visible * CW) / 2 - lead * CW
+        spans = []
         for text, key in row:
             spans.append(
-                f'<tspan fill="{c[key]}" x="{PAD + col*CW:.2f}" '
+                f'<tspan fill="{c[key]}" x="{x:.2f}" '
                 f'textLength="{len(text)*CW:.2f}" lengthAdjust="spacing">'
                 f'{escape(text)}</tspan>')
-            col += len(text)
+            x += len(text) * CW
         out.append(f'  <text style="white-space:pre" y="{y0 + n*LH}">'
                    f'{"".join(spans)}</text>')
     out.append("</svg>")
