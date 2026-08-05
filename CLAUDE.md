@@ -8,7 +8,7 @@ This is `manhIoi/manhIoi` — a GitHub profile repository. Its sole purpose is t
 
 ## Structure
 
-- `README.md` — two `<picture>` blocks: the typing intro line, then the card. Both swap between a dark and a light generated SVG. Nothing else belongs on the profile page; see "What not to add back".
+- `README.md` — two `<picture>` blocks: the typing intro line, then the card. Both swap between a dark and a light generated SVG, and both sit in a `<p align="center">`. Nothing else belongs on the profile page; see "What not to add back".
 - `assets/card-{dark,light}.svg`, `assets/intro-{dark,light}.svg` — **generated, never hand-edit.**
 - `scripts/theme.py` — the palette and font stack, shared by both generators. Type metrics are per-generator: the card is 14px, the intro 18px.
 - `scripts/build-card.py` — the card generator: portrait on top, info panel below, no frame. Edit `ROWS` for content, `scripts/theme.py` for colour, then run it. Needs Pillow only if `art.txt` is being re-rendered from a photo; the build itself is stdlib. (The Pillow installed on this machine is an x86_64 build and cannot load under the arm64 interpreter.)
@@ -110,6 +110,19 @@ The git history holds the code-block version if that trade ever needs revisiting
   dotted leader to span. Those leaders and the old runs of spaces before each date
   are gone, and `check_card_layout.py` fails if either comes back, if a row
   overflows the block, or if the colons stop sharing a column.
+- **`align="center"` on the wrapping `<p>` is what centres the card on the page.**
+  The card is 514px and the README column is ~830px, so without it the whole card
+  sits against the left edge no matter how its contents are aligned — centring
+  inside the SVG cannot fix being left-aligned as an image. Verified through the
+  Markdown API that the sanitizer keeps the attribute; `check_readme.sh` fails if
+  either block loses it. Do not chase this by widening the card instead: `W` over
+  ~830px costs text size, per the ceiling above.
+- **Headings are `H("title")` markers, expanded after the width is known.** The
+  rule is split around the title so the title sits centred — `───── Stack ─────`
+  rather than a title with a trailing rule. The dash count depends on `PW`, which
+  is measured from the content rows, so the expansion cannot happen at the literal.
+  An odd dash count goes to the right side, leaving a title at most half a cell
+  off centre.
 - **`CONTENT_W` sizes the card, and the dividers follow it.** Measured over
   content rows only, then `_stretch_rules` pads every section rule to it, so the
   headers bracket the block exactly. The portrait is wider than the panel and that

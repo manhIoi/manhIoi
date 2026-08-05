@@ -53,8 +53,22 @@ def T(org, role, when):
 def sub(text, bar=True):
     return [(" │ " if bar else "   ", "rule"), (text, "dim")]
 
+
+def H(title):
+    """A section heading, expanded once the panel width is known.
+
+    Kept as a marker rather than a literal row because the rule has to be split
+    around the title to centre it, and how many dashes that takes depends on the
+    panel width, which is measured from the content rows below.
+    """
+    return ("hdr", title)
+
+
+def _is_hdr(r):
+    return isinstance(r, tuple) and len(r) == 2 and r[0] == "hdr"
+
 ROWS = [
-    [("manhIoi@github ", "head"), ("─" * 46, "rule")],
+    H("manhIoi@github"),
     L("Name",     ("Pham Manh Loi", "value")),
     L("Role",     ("Software Engineer, Mobile", "value")),
     L("Focus",    ("Fintech, payments, wearables", "value")),
@@ -62,7 +76,7 @@ ROWS = [
     L("Speaks",   ("Vietnamese, English", "value")),
     L("Uptime",   ("5+ years in production", "value")),
     "gap",
-    [("─ Stack ", "head"), ("─" * 45, "rule")],
+    H("Stack"),
     L("Mobile",  ("React Native", "React"), (", ", "value"),
                  ("Kotlin", "Kotlin"), (", ", "value"), ("Swift", "Swift")),
     L("Native",  ("Compose", "Compose"), (", ", "value"),
@@ -78,7 +92,7 @@ ROWS = [
     L("CI/CD",   ("GitHub Actions", "Actions"), (", ", "value"),
                  ("Jenkins", "Jenkins")),
     "gap",
-    [("─ Timeline ", "head"), ("─" * 42, "rule")],
+    H("Timeline"),
     T("HDBank", "Mobile Developer", "2026.02 → now"),
     sub("Mobile banking and payment platform"),
     T("Q.Buzz", "Mobile Developer", "2026.01 → now"),
@@ -86,10 +100,10 @@ ROWS = [
     T("MoMo", "Mobile Developer", "2021 → 2026.01"),
     sub("Super-app, e-wallet, wearable payments", bar=False),
     "gap",
-    [("─ Education ", "head"), ("─" * 41, "rule")],
+    H("Education"),
     T("UIT", "Information Technology", "2019 → 2024"),
     "gap",
-    [("─ Contact ", "head"), ("─" * 43, "rule")],
+    H("Contact"),
     L("Email",     ("manhloi0505@gmail.com", "value")),
     L("LinkedIn",  ("loi-pham-manh", "value")),
     L("GitHub",    ("manhIoi", "value")),
@@ -167,27 +181,31 @@ def _row_cols(r):
 
 
 def _is_rule(r):
-    """A section header, i.e. a row whose last segment is a run of box-drawing."""
-    return r != "gap" and bool(r) and r[-1][1] == "rule" and set(r[-1][0]) == {"─"}
+    """An expanded section header: a row that ends in a run of box-drawing."""
+    return (r != "gap" and bool(r) and not _is_hdr(r)
+            and r[-1][1] == "rule" and set(r[-1][0]) == {"─"})
 
 
 # Measured over content rows only, so the dividers take their length from the
 # content instead of the content being sized to fit a divider chosen by hand.
-CONTENT_W = max(_row_cols(r) for r in ROWS if r != "gap" and not _is_rule(r))
+CONTENT_W = max(_row_cols(r) for r in ROWS
+                if r != "gap" and not _is_hdr(r) and not _is_rule(r))
 
 
-def _stretch_rules(rows, target):
-    """Make every section rule reach the same column.
+def _expand_headers(rows, target):
+    """Split each heading's rule around its title, so the title sits centred.
 
-    Each row is centred individually, so rules of different lengths would centre
-    at different widths and the dividers would step in and out down the card.
-    Stretching them all to the panel width makes them flush on both sides, which
-    is what gives the centred rows something symmetrical to sit between.
+    The odd dash goes to the right side, so a title that cannot be centred
+    exactly is off by half a cell rather than a whole one.
     """
     out = []
     for r in rows:
-        if _is_rule(r):
-            r = list(r[:-1]) + [("─" * (target - _row_cols(r[:-1])), "rule")]
+        if _is_hdr(r):
+            title = r[1]
+            dashes = target - len(title) - 2      # two spaces flanking the title
+            left = dashes // 2
+            r = [("─" * left, "rule"), (" ", "rule"), (title, "head"),
+                 (" ", "rule"), ("─" * (dashes - left), "rule")]
         out.append(r)
     return out
 
@@ -199,7 +217,7 @@ W = round(PAD * 2 + INNER)
 # with the section headers bracketing it. The portrait above is wider, and that is
 # fine — both are centred on the same axis.
 PW = CONTENT_W
-ROWS = _stretch_rules(ROWS, PW)
+ROWS = _expand_headers(ROWS, PW)
 # Left edge shared by every panel row, which centres the block as a whole.
 PANEL_X = (W - PW * CW) / 2
 H = round(PAD * 2 + AH * ART_LH + VGAP + len(ROWS) * LH)
