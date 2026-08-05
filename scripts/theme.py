@@ -42,6 +42,8 @@ P = {
     "SwiftUI":    ("#FF9F6B", "#B34700"),
     "Android":    ("#3DDC84", "#1F8B4C"),
     "watchOS":    ("#d0d7de", "#57606a"),
+    "Huawei":     ("#F1707B", "#C41E3A"),
+    "Wear OS":    ("#5FD0A8", "#1F7A5C"),
     "Jenkins":    ("#E8756B", "#B4352A"),
     "Actions":    ("#79C0FF", "#0969DA"),
 

@@ -28,9 +28,9 @@ ART_SRC = os.path.join(HERE, "art.txt")
 # read as symmetrical, and right-aligning is also what keeps it gapless — the
 # label always ends flush against its colon, so there is nothing for a dotted
 # leader to span.
-LABELS = ["Name", "Role", "Domain",
-          "Mobile", "Web", "Backend", "Database", "CI/CD",
-          "Email", "LinkedIn", "GitHub", "Phone", "Location"]
+LABELS = ["Name", "Role", "Domain", "Location",
+          "Mobile", "Wearable", "Web", "Backend", "Database", "CI/CD",
+          "Email", "LinkedIn"]
 LW = max(map(len, LABELS))          # the colon column
 
 
@@ -72,10 +72,13 @@ ROWS = [
     L("Name",   ("Pham Manh Loi", "value")),
     L("Role",   ("Software Engineer, Mobile", "value")),
     L("Domain", ("Fintech, health tracking", "value")),
+    L("Location", ("Vietnam", "value")),
     "gap",
     H("Stack"),
     L("Mobile",   ("React Native", "React"), (", ", "value"),
                   ("Kotlin", "Kotlin"), (", ", "value"), ("Swift", "Swift")),
+    L("Wearable", ("Huawei SDK", "Huawei"), (", ", "value"),
+                  ("watchOS", "watchOS"), (", ", "value"), ("Wear OS", "Wear OS")),
     L("Web",      ("TypeScript", "TypeScript"), (", ", "value"),
                   ("React", "React"), (", ", "value"),
                   ("Next.js", "Next.js"), (", ", "value"), ("Vue.js", "Vue.js")),
@@ -86,33 +89,36 @@ ROWS = [
                   ("Jenkins", "Jenkins")),
     "gap",
     H("Timeline"),
-    T("HDBank", "Mobile Developer", "2026.02 → now"),
+    # Two roles run concurrently, so both carry their employment type rather than
+    # leaving a reader to guess at two simultaneous full-time jobs. "Full-time" and
+    # "Part-time" happen to be the same length, so the date column still lines up
+    # with no padding.
+    T("HDBank", "Mobile Developer, Full-time", "2026.02 → now"),
     sub("Mobile banking and payment platform"),
-    T("Q.Buzz", "Mobile Developer", "2026.01 → now"),
+    T("Q.Buzz", "Mobile Developer, Part-time", "2026.01 → now"),
     sub("Daily habit tracking, health insights"),
-    T("MoMo", "Mobile Developer", "2021 → 2026.01"),
+    T("MoMo", "Mobile Developer, Full-time", "2021 → 2026.01"),
     sub("Super-app, e-wallet, wearable payments", bar=False),
     "gap",
     H("Education"),
-    T("UIT", "Information Technology", "2019 → 2024"),
+    T("UIT", "B.Eng. Information Systems", "2019 → 2024"),
     "gap",
     H("Contact"),
+    # No GitHub row: the card is displayed on that profile and the heading already
+    # says manhIoi@github. No phone either — a public number only attracts spam.
     L("Email",    ("manhloi0505@gmail.com", "value")),
     L("LinkedIn", ("loi-pham-manh", "value")),
-    L("GitHub",   ("manhIoi", "value")),
-    L("Phone",    ("+84 792 465 841", "value")),
-    L("Location", ("Vietnam", "value")),
 ]
 
 # ---- geometry --------------------------------------------------------------
-# The panel is 18px, not 14px, and that is a width decision rather than a taste
-# one. GitHub caps the README column at ~830px, so a card wider than that is
-# scaled down to fit and the reader sees FS * 830/W, never FS. Because W grows in
-# proportion to FS, raising the font size alone cancels itself out exactly — the
-# ceiling is 830/(0.6 * columns), so the only way to make the text bigger is to
-# use fewer character columns. Hence the stacked layout below: side by side the
-# card was 120 columns wide (56 of portrait + 3 + 61 of panel) and this same 14px
-# type arrived as ~11px. Stacked it is 61 columns and 556px wide, comfortably
+# How wide the card ends up is a type-size decision, not just a layout one.
+# GitHub caps the README column at ~830px and scales a wider image down to fit, so
+# the reader sees FS * 830/W, never FS. Because W grows in proportion to FS,
+# raising the font size alone cancels itself out exactly — the ceiling is
+# 830/(0.6 * columns), so the only way to make the text bigger is to use fewer
+# character columns. Hence the stacked layout below: side by side the card was 120
+# columns wide (56 of portrait + 3 + 61 of panel) and this same 14px type arrived
+# as ~11px. Stacked it is the portrait's 56 columns and 514px wide, comfortably
 # under the cap, so 14px arrives as 14px — the size it was authored for.
 FS, LH, PAD = 14, 19, 22
 # The portrait keeps the smaller type it was drawn for. It does not need to match
