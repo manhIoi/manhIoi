@@ -4,7 +4,7 @@
 
 **Goal:** Add a looping typewriter intro line above the profile card — four sentences that each type in, hold, delete themselves, and hand off to the next.
 
-**Architecture:** A new generator `scripts/build-intro.py` emits `assets/intro-{dark,light}.svg`, added to `README.md` as a second `<picture>` above the existing card. The palette and font stack move out of `build-card.py` into `scripts/theme.py` so both generators share them. Animation is pure CSS `@keyframes` inside the SVG — GitHub serves these files into an `<img>`, where CSS runs and only scripts are blocked.
+**Architecture:** A new generator `scripts/build_intro.py` (underscore — it must be importable) emits `assets/intro-{dark,light}.svg`, added to `README.md` as a second `<picture>` above the existing card. The palette and font stack move out of `build-card.py` into `scripts/theme.py` so both generators share them. Animation is pure CSS `@keyframes` inside the SVG — GitHub serves these files into an `<img>`, where CSS runs and only scripts are blocked.
 
 **Tech Stack:** Python 3 stdlib only (no Pillow — that is only needed to re-render `art.txt` from a photo). No test framework: this repo has none, and the plan does not add one. Verification is assertion scripts in the scratchpad plus a real-browser check.
 
@@ -219,7 +219,8 @@ git commit -m "Extract the shared palette and font stack into scripts/theme.py"
 Get the file, the dimensions, and the text metrics right with no animation. A static first frame is easier to diagnose than a broken loop.
 
 **Files:**
-- Create: `scripts/build-intro.py`, `assets/intro-dark.svg`, `assets/intro-light.svg`
+- Create: `scripts/build_intro.py` — **underscore, not hyphen.** A hyphenated name cannot be imported, and both check scripts import it. Creating `build-intro.py` here produces an `ImportError` two steps later with no obvious cause.
+- Create: `assets/intro-dark.svg`, `assets/intro-light.svg`
 - Test: `$SP/check_intro_geom.py`
 
 **Interfaces:**
@@ -288,7 +289,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'build_intro'`.
 
 - [ ] **Step 3: Write `scripts/build-intro.py`**
 
-The check imports it as `build_intro`, so the file also needs an underscore alias. Create the file as `scripts/build_intro.py` and note that `README`/docs refer to it by that name — a hyphen would make it unimportable.
+Create it as `scripts/build_intro.py`. The spec called it `build-intro.py`; that is unimportable, and both check scripts import it.
 
 ```python
 #!/usr/bin/env python3
@@ -604,16 +605,76 @@ print('PASS frames differ')
 
 `--virtual-time-budget` advances the page clock deterministically, so this does not race real time.
 
-- [ ] **Step 3: Look at both frames**
+**If the frames are identical, do not touch the generator yet.** Differing frames
+prove the animation runs; identical frames are ambiguous, because
+`--virtual-time-budget` may simply not be advancing animation time in this Chrome
+build. Rule the harness out first: open `$SP/intro-probe.html` in a normal Chrome
+window and watch it for five seconds. Motion there plus identical headless frames
+is a harness problem, not a generator problem — switch to real-time captures
+(`sleep`-then-screenshot with `--remote-debugging-port`, or just trust the visual
+check) and carry on. Only a static image in a *real* window justifies the SMIL
+fallback: `<animate attributeName="width" calcMode="discrete">` with a generated
+`values` list.
 
-Read `$SP/frame-600.png` and `$SP/frame-2500.png`. Confirm by eye:
+- [ ] **Step 3: Gate the caret position, not just "something moved"**
+
+The hash test in step 2 cannot detect a frozen caret. `width` on a `<rect>` and
+`x` on a `<rect>` are independent CSS-geometry support questions: if `width`
+animates and `x` does not, the text still types in, the frames still differ, step
+2 still prints `PASS`, and the caret sits stuck at the left edge. This step is
+the only thing that catches it.
+
+```bash
+"$CHROME" --headless --disable-gpu --hide-scrollbars \
+  --virtual-time-budget=2200 --screenshot="$SP/frame-caret.png" \
+  --window-size=1052,52 "$SP/intro-probe.html"
+
+python3 - <<'PY'
+import sys
+SP = "/private/tmp/claude-501/-Users-manhloi-Documents-personal-source-manhIoi/ebc0971c-bb96-4f31-8550-b4c955b19a20/scratchpad"
+try:
+    from PIL import Image
+except ImportError:
+    sys.exit("Pillow absent — verify the caret by eye per the note below, then continue")
+
+# At 2200ms sentence 0 is fully typed (typing ends at 1.04s, hold runs to 4.04s)
+# and the blink is in its visible half (2.2 mod 1.0 = 0.2 -> opacity 1).
+# Expected caret span: TEXT_X + 16*CW = 216.4, one cell wide.
+im = Image.open(f"{SP}/frame-caret.png").convert("RGB")
+GREEN = (63, 185, 80)          # #3fb950, the dark-theme label colour
+cols = [x for x in range(im.width) for y in range(im.height)
+        if sum(abs(a - b) for a, b in zip(im.getpixel((x, y)), GREEN)) < 90]
+assert cols, "FAIL: no green pixels at all — the $ prompt and caret are both missing"
+right = max(cols)
+print(f"rightmost green column: {right} (expect 216-230; prompt alone would be ~33)")
+assert 210 <= right <= 232, (
+    f"FAIL: caret at column {right}. If it is near 33 the caret x is not "
+    "animating — see the fallback below.")
+print("PASS caret tracks the text end")
+PY
+```
+
+**If the caret is frozen near column 33**, `x`-as-a-CSS-property is unsupported
+here. Switch the caret keyframes from `x:{...}px` to
+`transform:translateX({w:.2f}px)`, which has much broader support. One knock-on:
+`animation:none` then no longer parks caret 0 at the end of sentence 0, because
+the static `x` attribute is no longer what positions it. Add the reduced-motion
+end position explicitly:
+
+```css
+@media (prefers-reduced-motion: reduce){#caret0{transform:translateX(172.80px)}}
+```
+
+- [ ] **Step 4: Look at both frames yourself**
+
+Read `$SP/frame-600.png` and `$SP/frame-2500.png` as images. No assertion covers
+these three:
+
 - the 600ms frame shows a partial `Hi, I'm Manh Loi`, the 2500ms frame the full sentence
-- **no glyph is sliced vertically down its middle** — that is the `textLength`/`steps(n)` failure, and it is the single most likely defect
-- the green `$` prompt is present and the cursor sits flush against the last character, not floating past it
+- **no glyph is sliced vertically down its middle** — the `textLength`/`steps(n)` failure. This is the one defect that ships silently: it renders correctly on the author's machine and breaks on readers with a different monospace font. Nothing automated in this plan detects it.
+- the green `$` prompt is present, and the caret sits flush against the last character rather than overlapping it or floating past
 
-If frames are identical, CSS geometry animation is not running in this context. Switch the clip width to the SMIL fallback the spec names — `<animate attributeName="width" calcMode="discrete">` with a generated `values` list — and re-run steps 2 and 3. Do not reach for it before this step has actually failed.
-
-- [ ] **Step 4: Check the light variant too**
+- [ ] **Step 5: Check the light variant too**
 
 ```bash
 sed -i '' 's/intro-dark/intro-light/; s/#0d1117/#ffffff/' "$SP/intro-probe.html"
@@ -623,7 +684,7 @@ sed -i '' 's/intro-dark/intro-light/; s/#0d1117/#ffffff/' "$SP/intro-probe.html"
 
 Read `$SP/frame-light.png`. The text must be dark on white and legible — the light palette uses `#1f2328` text with a `#1a7f37` prompt.
 
-- [ ] **Step 5: No commit**
+- [ ] **Step 6: No commit**
 
 Nothing in the repo changed unless the fallback was needed. If it was, commit as in Task 3 step 3.
 
@@ -653,11 +714,12 @@ html=$(gh api --method POST /markdown -f mode=markdown -f text="$(cat README.md)
 for f in intro-dark intro-light card-dark card-light; do
   grep -q "$f" <<<"$html" || { echo "FAIL: sanitizer dropped $f"; exit 1; }
 done
-grep -q 'Software Engineer, Mobile' <<<"$html" || { echo "FAIL: alt text missing"; exit 1; }
 grep -q 'pl-ii' <<<"$html" && { echo "FAIL: red-background token present"; exit 1; }
 
-# every sentence must be in the alt text, not just some
-for s in "Hi, I'm Manh Loi" "Fintech, payments, wearables" "5+ years shipping to production"; do
+# Every sentence must be in the alt text, not just some. "Hi, I'm Manh Loi" is
+# checked as "Manh Loi" on purpose: GitHub may return the apostrophe as &#39;,
+# which would make a literal match fail on correct output.
+for s in "Manh Loi" "Software Engineer, Mobile" "Fintech, payments, wearables" "5+ years shipping to production"; do
   grep -qF "$s" <<<"$html" || { echo "FAIL: alt missing: $s"; exit 1; }
 done
 echo "PASS readme"
@@ -773,6 +835,7 @@ Then open <https://github.com/manhIoi> and watch one full 19.6s loop. Camo cache
 | `prefers-reduced-motion` | 2 (static attributes carry the fallback), 3 assert |
 | README markup | 5 |
 | Verification 1–4 | 1 step 5, 2 step 4, 4, 5 step 4 |
+| Caret tracks the text end (implied by "never a percentage") | 4 step 3, pixel-gated |
 | Documentation | 5 step 5 |
 
 No gaps.
@@ -799,5 +862,28 @@ assertions against a prototype rather than reading them:
 Keyframe offsets were checked for all four sentences: monotonic, first at `0.0`,
 last at `TOTAL`, every percentage inside `0..100`, and sentence `i` fully gone
 before `i+1` begins. Sentence 0 emits 5 keyframes, the rest 6.
+
+**Four further gaps found in a second review pass and closed:**
+
+6. **The two-frame hash test could pass with a frozen caret.** `width` and `x` on
+   a `<rect>` are independent CSS-geometry support questions; if only `width`
+   animates, the text still types and the frames still differ. Task 4 step 3 now
+   pixel-gates the caret's position, with the `transform:translateX` fallback and
+   its reduced-motion knock-on written out.
+7. **Identical headless frames were treated as proof of failure.** They are
+   ambiguous — `--virtual-time-budget` may not advance animation time. Task 4
+   step 2 now requires ruling the harness out in a real window before any
+   generator change.
+8. **`grep -qF "Hi, I'm Manh Loi"` in the README check could false-fail**, since
+   GitHub may return the apostrophe as `&#39;`. Shortened to `Manh Loi`.
+9. **`build-intro.py` survived in the Architecture line and Task 2's Files
+   block**, the two places an executor reads before the prose correction. Both
+   now say `build_intro.py` with the reason attached.
+
+**Known limits of this plan's verification.** The sliced-glyph failure has no
+automated gate — it is font-dependent, so it renders correctly on the author's
+machine by construction. Task 4 step 4 is a human read of two PNGs and cannot be
+delegated to a `PASS` string. The caret gate in step 3 needs Pillow; without it
+that check degrades to the same visual read.
 
 **Unused variable:** Task 2's `gate_off` is always `0.0`; it is kept as a named read of `frames()[0][0]` rather than a bare literal so the gate and the clip cannot drift apart. Harmless.
