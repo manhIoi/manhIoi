@@ -81,10 +81,10 @@ ROWS = [
 # proportion to FS, raising the font size alone cancels itself out exactly — the
 # ceiling is 830/(0.6 * columns), so the only way to make the text bigger is to
 # use fewer character columns. Hence the stacked layout below: side by side the
-# card was 120 columns wide (56 of portrait + 3 + 61 of panel) and 14px text
-# arrived as ~11px; stacked it is 61 columns and 703px wide, which is under the
-# cap, so 18px arrives as 18px.
-FS, LH, PAD = 18, 24, 22
+# card was 120 columns wide (56 of portrait + 3 + 61 of panel) and this same 14px
+# type arrived as ~11px. Stacked it is 61 columns and 556px wide, comfortably
+# under the cap, so 14px arrives as 14px — the size it was authored for.
+FS, LH, PAD = 14, 19, 22
 # The portrait keeps the smaller type it was drawn for. It does not need to match
 # the panel — a bigger portrait would only add height, and stacking already costs
 # plenty of that.

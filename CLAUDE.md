@@ -23,7 +23,7 @@ Regenerate and eyeball in a real browser — the SVG uses `textLength`, which ma
 ```sh
 python3 scripts/build-card.py && python3 scripts/build_intro.py
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
-  --screenshot=out.png --window-size=703,1358 assets/card-dark.svg
+  --screenshot=out.png --window-size=556,1188 assets/card-dark.svg
 ```
 
 ### Why an SVG and not a code block
@@ -85,10 +85,10 @@ The git history holds the code-block version if that trade ever needs revisiting
   Measured on the live profile, the old 120-column card (portrait 56 + gap 3 +
   panel 61) rendered at 0.79 scale, so its 14px text arrived as ~11px, and 18px
   would have arrived as ~11.1px. That is why the layout is stacked rather than
-  side by side: at 61 columns the card is 703px, under the cap, so it renders 1:1
-  and 18px is really 18px. Keep `W <= 830`. Widening the panel content costs text
-  size, and the portrait's `ART_FS` is separate precisely so the picture cannot
-  drag the width back up.
+  side by side: at 61 columns the card is 556px, well under the cap, so it renders
+  1:1 and 14px is really 14px. Keep `W <= 830`. Widening the panel content costs
+  text size, and the portrait's `ART_FS` is separate precisely so the picture
+  cannot drag the width back up.
 - **The intro's width is read from the card, not repeated.** `build_intro.py`
   parses `assets/card-dark.svg` for it, so build the card first — the order in the
   command above. They must match: the two images sit one above the other and
@@ -99,6 +99,18 @@ The git history holds the code-block version if that trade ever needs revisiting
   also drop the `fill` to make it transparent: a reader whose GitHub theme is set
   to Dark while their OS is Light gets the *light* card on a dark page, and the
   opaque background is the only thing keeping that dark text legible.
+- **The intro centres each sentence separately, so the prompt moves.** `START[i]`
+  centres a block of prompt + sentence + cursor, and the `+ 1` for the cursor cell
+  matters: leave it out and every line sits half a character right of centre. The
+  `$` therefore hops between the four positions, which it does on the slot
+  boundary — the instant the previous line has finished deleting itself, so only
+  the prompt and cursor are on screen when it moves. It is a `<text>`, and `x` is
+  *not* a CSS geometry property there (it is on the cursor's `<rect>`), so the hop
+  is `transform: translateX`, animated on the wrapping `#pg` group.
+- **Any probe that shifts the timeline must shift `.pg` too.** Injecting
+  `animation-delay` into `.clip,.caret,.cg` but not `.pg` leaves the prompt at
+  sentence 0's position while the sentences move to theirs. That looks exactly
+  like a centring bug in the generator, and it is not one.
 - **The intro's `steps(n)` is coupled to `textLength`.** Typing is a clip rect
   whose width steps from 0 to `n * CW`, which only lands on character boundaries
   because each `<text>` is pinned to exactly that width with `textLength` and

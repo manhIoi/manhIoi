@@ -56,12 +56,22 @@ PROMPT = "$ "          # ASCII on purpose: no ambiguous-width fallback risk
 W = _card_width()
 FS = 18                # a headline, deliberately larger than the card's 14
 CW = cw(FS)
-PAD_X, PAD_Y = 22, 14  # PAD_X matches the card's PAD so both share a left edge
+PAD_Y = 14
 DESC = 6               # descender allowance below the baseline
 BASE = PAD_Y + FS
 H = PAD_Y * 2 + FS + DESC
-TEXT_X = PAD_X + len(PROMPT) * CW
 CARET_Y = BASE - FS + 4
+
+# Each sentence is centred on its own, so a block of prompt + text + cursor sits
+# in the middle of the card whatever the sentence's length. The prompt therefore
+# has to move between sentences. It moves on the slot boundary, which is the
+# moment the previous line has just finished deleting itself, so the only things
+# on screen when it hops are the prompt and its cursor.
+#
+# The +1 is the cursor: it parks in the cell after the last character, so leaving
+# it out of the measurement pushes the line half a character right of centre.
+START = [(W - (len(PROMPT) + len(s) + 1) * CW) / 2 for s in SENTENCES]
+TEXT_X = [x + len(PROMPT) * CW for x in START]
 
 # ---- timing (seconds) ------------------------------------------------------
 TYPE, DEL, PAUSE, SLOT = 0.065, 0.035, 0.3, 4.9
@@ -111,11 +121,21 @@ def render(theme):
 
     css = [
         # Reduced-motion fallback lives in the static attributes, so it needs no
-        # override here: killing the animations leaves sentence 0 fully revealed
-        # and its cursor parked at the end of the text.
+        # override here: killing the animations leaves sentence 0 fully revealed,
+        # its cursor parked at the end of the text, and the prompt at sentence 0's
+        # centred position.
         "@media (prefers-reduced-motion: reduce){"
-        ".clip,.caret,.cg{animation:none!important}}"
+        ".clip,.caret,.cg,.pg{animation:none!important}}"
     ]
+    # The prompt steps between the four centred positions. It is a <text>, and x
+    # is not a CSS geometry property there (unlike on the caret's <rect>), so this
+    # has to be a transform.
+    css.append(
+        f"#pg{{animation:pg {TOTAL}s steps(1,jump-end) infinite}}"
+        f"@keyframes pg{{"
+        + "".join(f"{pct(i * SLOT)}%{{transform:translateX({x - START[0]:.2f}px)}}"
+                  for i, x in enumerate(START))
+        + f"100%{{transform:translateX({START[-1] - START[0]:.2f}px)}}}}")
     for i, s in enumerate(SENTENCES):
         n = len(s)
         fr = frames(i, n)
@@ -133,7 +153,7 @@ def render(theme):
             f"blink {BLINK}s steps(1,jump-end) infinite}}"
             f"@keyframes caret{i}{{"
             + "".join(
-                f"{pct(o)}%{{x:{TEXT_X + w:.2f}px;"
+                f"{pct(o)}%{{x:{TEXT_X[i] + w:.2f}px;"
                 + (f"animation-timing-function:{tf};" if tf else "")
                 + "}"
                 for o, (w, tf) in fr)
@@ -162,18 +182,19 @@ def render(theme):
         # the rest collapsed so they cannot overlap it.
         w0 = f"{len(s) * CW:.2f}" if i == 0 else "0"
         out.append(f'    <clipPath id="cp{i}"><rect id="clip{i}" class="clip" '
-                   f'x="{TEXT_X:.2f}" y="0" width="{w0}" height="{H}"/></clipPath>')
+                   f'x="{TEXT_X[i]:.2f}" y="0" width="{w0}" height="{H}"/></clipPath>')
     out.append("  </defs>")
-    out.append(f'  <text style="white-space:pre" fill="{c["label"]}" '
-               f'x="{PAD_X}" y="{BASE}" textLength="{len(PROMPT) * CW:.2f}" '
-               f'lengthAdjust="spacing">{escape(PROMPT)}</text>')
+    out.append(f'  <g id="pg" class="pg">'
+               f'<text style="white-space:pre" fill="{c["label"]}" '
+               f'x="{START[0]:.2f}" y="{BASE}" textLength="{len(PROMPT) * CW:.2f}" '
+               f'lengthAdjust="spacing">{escape(PROMPT)}</text></g>')
     for i, s in enumerate(SENTENCES):
         n = len(s)
         out.append(f'  <g clip-path="url(#cp{i})">'
                    f'<text style="white-space:pre" fill="{c["head"]}" '
-                   f'x="{TEXT_X:.2f}" y="{BASE}" textLength="{n * CW:.2f}" '
+                   f'x="{TEXT_X[i]:.2f}" y="{BASE}" textLength="{n * CW:.2f}" '
                    f'lengthAdjust="spacing">{escape(s)}</text></g>')
-        cx = f"{TEXT_X + n * CW:.2f}" if i == 0 else f"{TEXT_X:.2f}"
+        cx = f"{TEXT_X[i] + n * CW:.2f}" if i == 0 else f"{TEXT_X[i]:.2f}"
         op = "1" if i == 0 else "0"
         out.append(f'  <g id="cg{i}" class="cg" opacity="{op}">'
                    f'<rect id="caret{i}" class="caret" x="{cx}" y="{CARET_Y}" '
