@@ -13,8 +13,10 @@ This is `manhIoi/manhIoi` — a GitHub profile repository. Its sole purpose is t
 - `scripts/theme.py` — the palette and font stack, shared by both generators. Type metrics are per-generator: the card is 14px, the intro 18px.
 - `scripts/build-card.py` — the card generator: portrait on top, info panel below, no frame. Edit `ROWS` for content, `scripts/theme.py` for colour, then run it. Needs Pillow only if `art.txt` is being re-rendered from a photo; the build itself is stdlib. (The Pillow installed on this machine is an x86_64 build and cannot load under the arm64 interpreter.)
 - `scripts/build_intro.py` — the intro generator. Edit `SENTENCES` or the timing constants, then run it. Underscored, not hyphenated, so it can be imported.
-- `scripts/art.txt` — the ASCII portrait. Authored for a light background; the dark variant is derived from it at build time.
-- `AGENTS.md` — stale inherited boilerplate describing a `skills/` layout that does not exist here. Ignore it.
+- `scripts/art.txt` — the ASCII portrait. Authored for a light background; the dark variant is derived from it at build time. It is the *only* source for the portrait — the photo it came from was never committed, and no script here reads an image.
+- `docs/superpowers/{plans,specs}/2026-08-05-typing-intro*.md` — the design record for the intro. The plan is fully executed, so nothing reads these; they are kept because they hold the reasoning behind the timing and `textLength` coupling in more depth than the notes below. At ~50KB the plan is the largest tracked file in the repo, so delete them if that ever matters — the history keeps them.
+
+That is the whole repo, plus `CLAUDE.md` and `.gitignore`. It was also carrying four orphaned logo/GIF images and an inherited `AGENTS.md` describing a `skills/` layout that never existed here; all five are deleted. Anything not referenced by `README.md` and not read by a script does not belong in `assets/`.
 
 ## Working in this repo
 
@@ -23,8 +25,12 @@ Regenerate and eyeball in a real browser — the SVG uses `textLength`, which ma
 ```sh
 python3 scripts/build-card.py && python3 scripts/build_intro.py
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
-  --screenshot=out.png --window-size=514,1228 assets/card-dark.svg
+  --screenshot=out.png --window-size=514,1114 assets/card-dark.svg
 ```
+
+The window size is the card's own `WxH`, which the build prints — pass a stale one
+and the screenshot is cropped or padded, and neither is a fault in the SVG.
+`out.png` lands in the repo root and is git-ignored.
 
 ### Why an SVG and not a code block
 
@@ -71,8 +77,9 @@ The git history holds the code-block version if that trade ever needs revisiting
   smeared the art across the full line width.
 - **Colour is authored, so contrast is now your problem.** GitHub no longer
   picks it. Several brand hues are illegible on one of the two backgrounds, so
-  `P` stores `(dark, light)` pairs — JavaScript yellow becomes `#9A8700` on
-  white, React cyan becomes `#0B8CA8`, Next.js flips black/white.
+  `P` stores `(dark, light)` pairs — React cyan becomes `#0B8CA8` on white,
+  .NET's `#512BD4` is lightened for dark, Next.js flips black/white. `P` holds a
+  pair only for a name the card still lists; drop the row, drop the pair.
 - **Theme switching follows the OS, not GitHub.** `prefers-color-scheme` is a
   browser media query; GitHub's own theme picker cannot change what it reports.
   A reader whose GitHub theme is set explicitly to Dark while their OS is Light
@@ -164,11 +171,20 @@ The git history holds the code-block version if that trade ever needs revisiting
   specificity. Load the copy through an `<img>` — opening a `.svg` directly is a
   document context and permits more than GitHub's `<img>` does.
 - **Headless capture lands ~0.55s into the animation, and not stably.** So aim
-  measurements at the middle of a multi-second hold, never a precise instant, and
-  freeze the 1s blink (`#caretN{animation-name:caretN!important}`) before
+  measurements inside a multi-second hold, never at a precise instant (which
+  point in the hold is the next bullet), and freeze the 1s blink (`#caretN{animation-name:caretN!important}`) before
   measuring the caret's position — otherwise the caret is missing from the frame
   half the time and it looks like `x` is not animating. It is; CSS `x` on a
   `<rect>` works in Chrome.
+- **The drift is one-directional, so the hold's midpoint is not a safe aim for the
+  longest sentence.** Typing speed is constant and every sentence gets the same
+  `SLOT`, so the longest sentence has the *shortest* hold: `'5+ years shipping to
+  production'` holds 1.5s against sentence 0's 3.0s, leaving only 0.75s from the
+  midpoint to the start of deletion. Capture always lands *late*, never early, so
+  that margin is what the ~0.55s drift eats — the frame arrives a character or two
+  into the delete phase and the assertion reads as an off-centre or short line.
+  Aim `hold_start + 0.3s` instead of the midpoint. Before believing any such
+  failure, check `git diff assets/`: if the SVG is unchanged, it is this.
 
 ### What not to add back
 

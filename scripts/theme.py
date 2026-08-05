@@ -13,9 +13,12 @@ adjacent on the profile and a one-hex divergence is visible immediately.
 
 # (dark, light). Brand hues are nudged where the true brand colour would be
 # illegible against one of the two backgrounds.
+#
+# Only keys the card's ROWS actually reference live here. A colour for a stack
+# entry that is no longer listed is dead weight that reads as if the entry were
+# still on the card, so drop the pair when you drop the row.
 P = {
     "bg":     ("#0d1117", "#ffffff"),
-    "border": ("#30363d", "#d0d7de"),
     "art":    ("#c9d1d9", "#24292f"),   # neutral, matches the value colour
     "value":  ("#c9d1d9", "#24292f"),
     "label":  ("#3fb950", "#1a7f37"),   # green in both themes
@@ -26,7 +29,6 @@ P = {
     "TypeScript": ("#3178C6", "#2F74C0"),
     "Kotlin":     ("#A277FF", "#7F52FF"),
     "Swift":      ("#F05138", "#D63A22"),
-    "JavaScript": ("#F7DF1E", "#9A8700"),
     "React":      ("#61DAFB", "#0B8CA8"),
     "Next.js":    ("#ffffff", "#000000"),
     "Node.js":    ("#6BBF59", "#417E38"),
@@ -37,10 +39,6 @@ P = {
     "Vue.js":     ("#4FC08D", "#2F8F63"),
     "PostgreSQL": ("#6E8FF0", "#31648C"),
     "MongoDB":    ("#4DB33D", "#2E7D32"),
-    "Realm":      ("#8E9AD6", "#39477F"),
-    "Compose":    ("#7CB0F7", "#2C5FB3"),
-    "SwiftUI":    ("#FF9F6B", "#B34700"),
-    "Android":    ("#3DDC84", "#1F8B4C"),
     "watchOS":    ("#d0d7de", "#57606a"),
     "Huawei":     ("#F1707B", "#C41E3A"),
     "Wear OS":    ("#5FD0A8", "#1F7A5C"),

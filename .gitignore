@@ -1,2 +1,7 @@
+.DS_Store
 .idea/
+.claude/
 __pycache__/
+
+# The screenshot command in CLAUDE.md writes here, from the repo root.
+out.png
