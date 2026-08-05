@@ -134,6 +134,7 @@ ART_CW = cw(ART_FS)
 ART_LH = 16
 CW = cw(FS)
 VGAP = 18                  # breathing room between the portrait and the panel
+HEAD_GAP = 8               # extra room under a section heading, see _baselines
 
 # Ink density reads as *darkness* on a light background but as *brightness* on a
 # dark one, so the one portrait has to be tone-flipped for the dark theme or the
@@ -220,7 +221,30 @@ PW = CONTENT_W
 ROWS = _expand_headers(ROWS, PW)
 # Left edge shared by every panel row, which centres the block as a whole.
 PANEL_X = (W - PW * CW) / 2
-H = round(PAD * 2 + AH * ART_LH + VGAP + len(ROWS) * LH)
+
+
+def _baselines(rows):
+    """Baseline offset per row, and the panel's total advance.
+
+    Not a flat n * LH. A heading's rule sits on the same baseline as its title, so
+    at plain leading it crowds the first line of its section — the rule and the
+    text below it end up closer than two lines of body text are. HEAD_GAP buys that
+    line some room without opening a full blank line, which would space the heading
+    as far from its own section as from the one above.
+    """
+    ys, y = [], 0
+    for r in rows:
+        if r == "gap":
+            ys.append(None)
+            y += LH
+            continue
+        ys.append(y)
+        y += LH + (HEAD_GAP if _is_rule(r) else 0)
+    return ys, y
+
+
+ROW_Y, PANEL_H = _baselines(ROWS)
+H = round(PAD * 2 + AH * ART_LH + VGAP + PANEL_H)
 
 
 def render(theme):
@@ -260,7 +284,7 @@ def render(theme):
                 f'textLength="{len(text)*CW:.2f}" lengthAdjust="spacing">'
                 f'{escape(text)}</tspan>')
             x += len(text) * CW
-        out.append(f'  <text style="white-space:pre" y="{y0 + n*LH}">'
+        out.append(f'  <text style="white-space:pre" y="{y0 + ROW_Y[n]}">'
                    f'{"".join(spans)}</text>')
     out.append("</svg>")
     return "\n".join(out)

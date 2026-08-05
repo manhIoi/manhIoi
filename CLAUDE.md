@@ -23,7 +23,7 @@ Regenerate and eyeball in a real browser — the SVG uses `textLength`, which ma
 ```sh
 python3 scripts/build-card.py && python3 scripts/build_intro.py
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
-  --screenshot=out.png --window-size=514,1188 assets/card-dark.svg
+  --screenshot=out.png --window-size=514,1228 assets/card-dark.svg
 ```
 
 ### Why an SVG and not a code block
@@ -123,6 +123,13 @@ The git history holds the code-block version if that trade ever needs revisiting
   is measured from the content rows, so the expansion cannot happen at the literal.
   An odd dash count goes to the right side, leaving a title at most half a cell
   off centre.
+- **Row baselines are accumulated, not `n * LH`.** A heading's rule sits on the
+  same baseline as its title, so at plain leading it crowds the first line of its
+  section — the rule and the text under it end up tighter than two body lines are.
+  `HEAD_GAP` adds room under each heading only, giving 19px between body lines,
+  27px under a heading and 38px above one, so a heading belongs to the section
+  below it. A full blank line instead would space it equally from both. `H` comes
+  from the same accumulation, so changing `HEAD_GAP` cannot desync the height.
 - **`CONTENT_W` sizes the card, and the dividers follow it.** Measured over
   content rows only, then `_stretch_rules` pads every section rule to it, so the
   headers bracket the block exactly. The portrait is wider than the panel and that
