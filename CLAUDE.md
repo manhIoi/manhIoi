@@ -99,26 +99,22 @@ The git history holds the code-block version if that trade ever needs revisiting
   also drop the `fill` to make it transparent: a reader whose GitHub theme is set
   to Dark while their OS is Light gets the *light* card on a dark page, and the
   opaque background is the only thing keeping that dark text legible.
-- **Every panel row is centred individually, on its visible run.** The portrait
-  above it is centred, so a left-aligned panel read as off to one side — that
-  alignment was a leftover from when the panel sat beside the portrait. Two
-  details: centring uses the row's text with leading and trailing spaces
-  stripped, because the timeline rows are indented three cells and the
-  `. Label` rows one, and counting that padding as content pushes them right of
-  centre; and `_stretch_rules` pads every section rule out to `PW` so the
-  dividers are flush on both sides, since rules of different lengths would centre
-  at different widths and step in and out down the card. `PW` is floored from the
-  inner width so a rule can never overrun it, and it works out to the portrait's
-  56 columns, which is what makes the dividers line up with the picture above.
-  The cost is that the label column no longer lines up vertically — that is
-  inherent to centring rows of different lengths, not a bug.
-- **Nothing may pad out to an interior column any more.** The dotted leaders and
-  the run of spaces before each timeline date both existed to align a value
-  column down a left-aligned panel. Centred rows have no interior column to align
-  on, so that padding only opens a hole in the middle of the line — both were
-  removed, and `check_card_golden.sh` fails if leader dots reappear. `CONTENT_W`
-  is measured over content rows only, so adding a row longer than the portrait is
-  what widens the card; the dividers then follow the width rather than set it.
+- **The panel is one centred block, not a stack of centred lines.** Centring each
+  row independently is what reads as *lost* symmetry: rows differ in length, so
+  the label column lands somewhere new on every line and both edges come out a
+  zigzag. It was tried and reverted. Instead every row shares `PANEL_X`, and the
+  symmetry comes from alignment inside the block — `LW` right-aligns the labels so
+  every colon falls on one column, and `NW` pads the org names so the timeline's
+  roles and dates line up too. Right-aligning the labels is also what keeps it
+  gapless: a label always ends flush against its colon, so there is nothing for a
+  dotted leader to span. Those leaders and the old runs of spaces before each date
+  are gone, and `check_card_layout.py` fails if either comes back, if a row
+  overflows the block, or if the colons stop sharing a column.
+- **`CONTENT_W` sizes the card, and the dividers follow it.** Measured over
+  content rows only, then `_stretch_rules` pads every section rule to it, so the
+  headers bracket the block exactly. The portrait is wider than the panel and that
+  is fine — both are centred on the same axis. Adding a row longer than the
+  portrait is what widens the card.
 - **The intro centres each sentence separately, so the prompt moves.** `START[i]`
   centres a block of prompt + sentence + cursor, and the `+ 1` for the cursor cell
   matters: leave it out and every line sits half a character right of centre. The

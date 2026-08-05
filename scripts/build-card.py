@@ -19,11 +19,39 @@ ART_SRC = os.path.join(HERE, "art.txt")
 
 # ---- content ---------------------------------------------------------------
 # Each row is a list of (text, colour-key) segments. "gap" is a blank line.
-# No dotted leaders. They exist to carry the eye across a gap to a value in a
-# column, and once every row is centred there is no column to carry it to — the
-# leaders just opened a hole in the middle of each line.
+#
+# Rows are not centred one by one. Centring each row independently is what the
+# eye reads as *lost* symmetry: rows differ in length, so the label column lands
+# somewhere new on every line and both edges come out as a zigzag. Instead the
+# whole panel is one block, centred on the card, with the labels right-aligned so
+# every colon falls on the same column. That single vertical axis is what makes it
+# read as symmetrical, and right-aligning is also what keeps it gapless — the
+# label always ends flush against its colon, so there is nothing for a dotted
+# leader to span.
+LABELS = ["Name", "Role", "Focus", "Location", "Speaks", "Uptime",
+          "Mobile", "Native", "Web", "Runtime", "Data", "CI/CD",
+          "Email", "LinkedIn", "GitHub", "Facebook", "Instagram", "Phone"]
+LW = max(map(len, LABELS))          # the colon column
+
+
 def L(label, *value):
-    return [(" . ", "dim"), (label, "label"), (": ", "dim"), *value]
+    assert label in LABELS, label    # LW has to cover every label used
+    return [(label.rjust(LW), "label"), (": ", "dim"), *value]
+
+
+# Timeline and education entries. Names are padded to a common width so the roles
+# and the dates line up down the card too, on the same principle as the colons.
+ORGS = ["HDBank", "Q.Buzz", "MoMo", "UIT"]
+NW = max(map(len, ORGS))
+
+
+def T(org, role, when):
+    return [(" ● ", org), (org.ljust(NW), org), ("  ", "value"),
+            (role, "value"), ("  ", "value"), (when, "dim")]
+
+
+def sub(text, bar=True):
+    return [(" │ " if bar else "   ", "rule"), (text, "dim")]
 
 ROWS = [
     [("manhIoi@github ", "head"), ("─" * 46, "rule")],
@@ -51,22 +79,15 @@ ROWS = [
                  ("Jenkins", "Jenkins")),
     "gap",
     [("─ Timeline ", "head"), ("─" * 42, "rule")],
-    # The date columns used to be padded out to align down the card. Centred rows
-    # cannot align on an interior column, so that padding is only a hole in the
-    # middle of the line now — same reason the dotted leaders went.
-    [("   ● ", "HDBank"), ("HDBank", "HDBank"),
-     ("  Mobile Developer", "value"), ("  2026.02 → now", "dim")],
-    [("   │ ", "rule"), ("Mobile banking and payment platform", "dim")],
-    [("   ● ", "Q.Buzz"), ("Q.Buzz", "Q.Buzz"),
-     ("  Mobile Developer", "value"), ("  2026.01 → now", "dim")],
-    [("   │ ", "rule"), ("Daily habit tracking, health insights", "dim")],
-    [("   ● ", "MoMo"), ("MoMo", "MoMo"), ("  Mobile Developer", "value"),
-     ("  2021 → 2026.01", "dim")],
-    [("     ", "rule"), ("Super-app, e-wallet, wearable payments", "dim")],
+    T("HDBank", "Mobile Developer", "2026.02 → now"),
+    sub("Mobile banking and payment platform"),
+    T("Q.Buzz", "Mobile Developer", "2026.01 → now"),
+    sub("Daily habit tracking, health insights"),
+    T("MoMo", "Mobile Developer", "2021 → 2026.01"),
+    sub("Super-app, e-wallet, wearable payments", bar=False),
     "gap",
     [("─ Education ", "head"), ("─" * 41, "rule")],
-    [("   ● ", "UIT"), ("UIT", "UIT"), ("  Information Technology", "value"),
-     ("  2019 → 2024", "dim")],
+    T("UIT", "Information Technology", "2019 → 2024"),
     "gap",
     [("─ Contact ", "head"), ("─" * 43, "rule")],
     L("Email",     ("manhloi0505@gmail.com", "value")),
@@ -174,12 +195,13 @@ def _stretch_rules(rows, target):
 # Stacked, so width is whichever block is wider rather than the sum of both.
 INNER = max(AW * ART_CW, CONTENT_W * CW)
 W = round(PAD * 2 + INNER)
-# The dividers span the card's full inner width, which is the portrait's width
-# here. Sizing them to the content instead would leave them visibly narrower than
-# the picture directly above them. Floor, so a rule can never overrun the inner
-# width by a fraction of a cell.
-PW = int(INNER / CW)
+# Dividers span exactly the content block, so the panel reads as one rectangle
+# with the section headers bracketing it. The portrait above is wider, and that is
+# fine — both are centred on the same axis.
+PW = CONTENT_W
 ROWS = _stretch_rules(ROWS, PW)
+# Left edge shared by every panel row, which centres the block as a whole.
+PANEL_X = (W - PW * CW) / 2
 H = round(PAD * 2 + AH * ART_LH + VGAP + len(ROWS) * LH)
 
 
@@ -209,17 +231,10 @@ def render(theme):
     for n, row in enumerate(ROWS):
         if row == "gap":
             continue
-        # Each row is centred on the card. The portrait above it is centred too,
-        # so anything left-aligned here reads as off to one side — that alignment
-        # was a leftover from when the panel sat to the right of the portrait.
-        #
-        # Centre the *visible* run, not the raw cell count: the timeline rows are
-        # indented three cells and the ". Label" rows one, so counting that
-        # padding as content would push every one of them right of centre.
-        flat = "".join(t for t, _ in row)
-        lead = len(flat) - len(flat.lstrip(" "))
-        visible = len(flat.strip(" "))
-        x = (W - visible * CW) / 2 - lead * CW
+        # One shared left edge for every row: the panel is a single centred block,
+        # not a stack of independently centred lines. The alignment inside it — the
+        # colon column, the padded org names — is what carries the symmetry.
+        x = PANEL_X
         spans = []
         for text, key in row:
             spans.append(
